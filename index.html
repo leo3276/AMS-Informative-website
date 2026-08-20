@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AMS — Accounting Management System | The Complete Enterprise Guide</title>
+  <meta name="description" content="Explore every capability of AMS: Universal 60-Second Data Migration, Vision AI Receipt OCR, Master Owner PIN, Barcode POS, Customer Debt Recovery, GRA Tax, and Offline-First Workstations.">
+  <link rel="icon" href="images/app-icon.png">
+  
+  <!-- Tailwind CSS CDN with dark mode class support -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#030712',
+            brandDark: '#080E1A',
+            brandSurface: '#0F172A',
+            brandCard: '#131D31',
+            brandBorder: '#1E293B',
+            brandCyan: '#06B6D4',
+            brandCyanGlow: '#22D3EE',
+            brandEmerald: '#10B981',
+            brandEmeraldLight: '#34D399',
+            brandViolet: '#8B5CF6',
+            brandZinc: '#94A3B8'
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    
+    /* DARK MODE STYLES */
+    .dark body {
+      background-color: #030712;
+      color: #F8FAFC;
+    }
+    .dark .cyber-grid {
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .dark .glass-panel {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .dark .glass-panel-interactive {
+      background: rgba(19, 29, 49, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .dark .glass-panel-interactive:hover {
+      border-color: rgba(16, 185, 129, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 30px rgba(16, 185, 129, 0.12);
+    }
+    .dark .desktop-frame {
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.95), 0 0 80px rgba(6, 182, 212, 0.12);
+      overflow: hidden;
+      background: #080E1A;
+    }
+
+    /* LIGHT MODE STYLES */
+    html:not(.dark) body {
+      background-color: #F8FAFC;
+      color: #0F172A;
+    }
+    html:not(.dark) .cyber-grid {
+      background-image: 
+        linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    html:not(.dark) .glass-panel {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+    html:not(.dark) .glass-panel-interactive {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    }
+    html:not(.dark) .glass-panel-interactive:hover {
+      border-color: rgba(16, 185, 129, 0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.08), 0 0 20px rgba(16, 185, 129, 0.1);
+    }
+    html:not(.dark) .desktop-frame {
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 20px;
+      box-shadow: 0 25px 50px -15px rgba(0, 0, 0, 0.1), 0 0 40px rgba(6, 182, 212, 0.08);
+      overflow: hidden;
+      background: #FFFFFF;
+    }
+
+    .phone-frame {
+      border: 6px solid #1E293B;
+      border-radius: 36px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 40px rgba(16, 185, 129, 0.2);
+      overflow: hidden;
+      background: #000000;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .phone-frame:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.9), 0 0 50px rgba(16, 185, 129, 0.3);
+    }
+
+    .gradient-text-emerald {
+      background: linear-gradient(135deg, #10B981 0%, #059669 50%, #0284C7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .dark .gradient-text-emerald {
+      background: linear-gradient(135deg, #34D399 0%, #10B981 50%, #06B6D4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-brandEmerald selection:text-black overflow-x-hidden cyber-grid">
+
+  <!-- ======================================================== -->
+  <!-- TOP NAVIGATION BAR WITH THEME SWITCHER                   -->
+  <!-- ======================================================== -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-200 dark:border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#hero" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 flex items-center justify-center group-hover:scale-110 transition transform">
+          <svg viewBox="0 0 1000 1000" class="w-9 h-9 fill-slate-900 dark:fill-white drop-shadow-sm">
+            <polygon points="500,80 860,880 710,880 500,410 290,880 140,880" />
+            <polygon points="500,530 635,880 365,880" />
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xl font-black tracking-tight text-slate-900 dark:text-white">AMS</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-brandEmerald/15 text-emerald-600 dark:text-brandEmeraldLight border border-brandEmerald/30">
+              Complete Capabilities
+            </span>
+          </div>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium hidden sm:block">Accounting Management System</p>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="hidden lg:flex items-center gap-6 text-xs font-bold text-slate-600 dark:text-slate-300">
+        <a href="#all-features" class="hover:text-brandEmerald transition">All 12 Capabilities</a>
+        <a href="#migration" class="hover:text-brandEmerald transition flex items-center gap-1">
+          <span>⚡ 60s Migration</span>
+          <span class="px-1.5 py-0.5 rounded text-[8px] bg-brandEmerald text-black font-black">FAST</span>
+        </a>
+        <a href="#security" class="hover:text-brandEmerald transition">Owner PIN</a>
+        <a href="#tax-gra" class="hover:text-brandEmerald transition">GRA Tax</a>
+        <a href="#downloads" class="hover:text-brandEmerald transition">Downloads</a>
+        <a href="#pricing" class="hover:text-brandEmerald transition">Pricing</a>
+      </nav>
+
+      <!-- Action Buttons & Light/Dark Switcher -->
+      <div class="flex items-center gap-3">
+        
+        <!-- Light / Dark Mode Toggle Button -->
+        <button id="theme-toggle" aria-label="Toggle Light/Dark Mode" class="p-2.5 rounded-xl bg-slate-100 dark:bg-white/10 border border-slate-200 dark:border-white/15 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-white/20 transition flex items-center justify-center">
+          <span id="theme-toggle-dark-icon" class="hidden text-sm">🌙</span>
+          <span id="theme-toggle-light-icon" class="hidden text-sm">☀️</span>
+        </button>
+
+        <a href="https://ams-8nhc3v8sk-fms11.vercel.app" target="_blank" class="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:bg-slate-200 dark:hover:bg-white/10 transition">
+          <span>🌐 Web Login</span>
+        </a>
+
+        <a href="#downloads" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-extrabold text-black bg-brandEmerald hover:bg-brandEmeraldLight shadow-lg shadow-brandEmerald/25 transition transform hover:-translate-y-0.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          <span>Download</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+
+  <!-- ======================================================== -->
+  <!-- HERO SECTION                                             -->
+  <!-- ======================================================== -->
+  <section id="hero" class="relative pt-12 pb-20 lg:pt-16 lg:pb-28 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      
+      <!-- Elevated Floating Stylish "A" Emblem -->
+      <div class="flex justify-center mb-6">
+        <a href="logo-showcase.html" title="Click to view lossless emblem showcase" class="group relative inline-flex items-center justify-center p-3 rounded-3xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-2xl backdrop-blur-xl hover:scale-105 transition transform duration-300">
+          <svg viewBox="0 0 1000 1000" class="w-16 h-16 sm:w-20 sm:h-20 fill-slate-900 dark:fill-white drop-shadow-[0_10px_20px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_10px_25px_rgba(255,255,255,0.2)]">
+            <polygon points="500,80 870,880 730,880 500,370 270,880 130,880" />
+            <polygon points="500,530 635,880 365,880" />
+          </svg>
+        </a>
+      </div>
+
+      <!-- Pill Banner -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-300 mb-8 shadow-sm">
+        <span class="flex h-2 w-2 relative">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brandEmerald opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-brandEmerald"></span>
+        </span>
+        <span>The Complete 12-in-1 Native Accounting & POS Workstation</span>
+        <span class="text-slate-400">|</span>
+        <span class="text-emerald-600 dark:text-brandEmerald font-extrabold">Desktop + Mobile + Web</span>
+      </div>
+
+      <!-- Hero Headline -->
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight max-w-5xl mx-auto leading-[1.08] mb-6 text-slate-900 dark:text-white">
+        Everything Your Business Needs. <br />
+        <span class="gradient-text-emerald">Explained From A to Z.</span>
+      </h1>
+
+      <p class="text-base sm:text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto font-medium mb-10 leading-relaxed">
+        AMS replaces QuickBooks, Excel workbooks, manual debt notebooks, and POS machines with one synchronized offline-first workstation. Built specifically for wholesale, retail, pharmacies, supermarkets, and service companies.
+      </p>
+
+      <!-- Primary Action Buttons -->
+      <div class="flex flex-wrap items-center justify-center gap-4 mb-16">
+        <a href="#downloads" class="flex items-center gap-3 px-8 py-4 rounded-2xl text-sm font-extrabold text-black bg-brandEmerald hover:bg-brandEmeraldLight shadow-xl shadow-brandEmerald/25 transition transform hover:scale-105">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          <span>Download Desktop & Mobile Apps</span>
+        </a>
+
+        <a href="#all-features" class="flex items-center gap-3 px-8 py-4 rounded-2xl text-sm font-extrabold text-slate-800 dark:text-white bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 border border-slate-200 dark:border-white/15 transition transform hover:scale-105">
+          <span>Explore All 12 Capabilities ↓</span>
+        </a>
+      </div>
+
+      <!-- Quick Metrics Bar -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto text-left">
+        <div class="glass-panel p-4 rounded-2xl border border-slate-200 dark:border-white/10">
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Universal Migration</p>
+          <p class="text-xl font-black text-emerald-600 dark:text-brandEmerald font-mono mt-0.5">60 Seconds</p>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400">Excel, CSV & multi-sheet</p>
+        </div>
+        <div class="glass-panel p-4 rounded-2xl border border-slate-200 dark:border-white/10">
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Vision AI OCR</p>
+          <p class="text-xl font-black text-cyan-600 dark:text-brandCyan font-mono mt-0.5">0.4s Ingestion</p>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400">Paper receipts & invoices</p>
+        </div>
+        <div class="glass-panel p-4 rounded-2xl border border-slate-200 dark:border-white/10">
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Role Separation</p>
+          <p class="text-xl font-black text-purple-600 dark:text-brandViolet font-mono mt-0.5">Master PIN</p>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400">Cashier profit lock</p>
+        </div>
+        <div class="glass-panel p-4 rounded-2xl border border-slate-200 dark:border-white/10">
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Tax & Compliance</p>
+          <p class="text-xl font-black text-amber-600 dark:text-amber-400 font-mono mt-0.5">GRA VAT Ready</p>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400">Flat rate & standard</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ======================================================== -->
+  <!-- THE COMPLETE 12-IN-ONE CAPABILITY DIRECTORY              -->
+  <!-- ======================================================== -->
+  <section id="all-features" class="py-20 bg-slate-50/50 dark:bg-brandDark/50 border-t border-slate-200 dark:border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-extrabold uppercase tracking-widest text-emerald-600 dark:text-brandEmerald px-3 py-1 rounded-full bg-brandEmerald/10 border border-brandEmerald/20">
+          Comprehensive Feature Encyclopedia
+        </span>
+        <h2 class="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white mt-4 tracking-tight">
+          Everything AMS Does in 12 Modules.
+        </h2>
+        <p class="text-slate-600 dark:text-slate-400 mt-4 text-base">
+          From the first barcode scan to your end-of-year GRA tax audit, here is the full breakdown of how AMS operates your business.
+        </p>
+      </div>
+
+      <!-- 12 FEATURE TILES (3x4 GRID) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- MODULE 1: UNIVERSAL 60S DATA MIGRATION -->
+        <div class="glass-panel-interactive p-6 rounded-3xl border border-slate-200 dark:border-white/10 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-600 dark:text-brandEmerald font-black text-2xl flex items-center justify-center mb-5">
+              ⚡
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <h3 class="text-lg font-black text-slate-900 dark:text-white">1. Universal Data Migration</h3>
+              <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-brandEmerald/20 text-emerald-700 dark:text-brandEmerald">60 SECONDS</span>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+              Drag and drop any Excel (.xlsx, .xls) or CSV spreadsheet. AMS automatically analyzes column headers and categorizes your data into 5 business tables.
+            </p>
+            <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+              <li class="flex items-start gap-2">✓ <span><strong>Invoices & Historical Sales</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Fixed Assets & Machinery</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Inventory with Target Profit Margins</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Customer Debt Recovery Book</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Multi-Sheet Workbook Auto-Discovery</strong></span></li>
+            </ul>
+          </div>
+          <a href="#migration" class="text-xs font-bold text-emerald-600 dark:text-brandEmerald hover:underline">Learn how migration works →</a>
+        </div>
+
+        <!-- MODULE 2: VISION AI RECEIPT OCR & MOMO -->
+        <div class="glass-panel-interactive p-6 rounded-3xl border border-slate-200 dark:border-white/10 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-cyan-500/15 text-cyan-600 dark:text-brandCyan font-black text-2xl flex items-center justify-center mb-5">
+              📸
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <h3 class="text-lg font-black text-slate-900 dark:text-white">2. Vision AI Receipt OCR</h3>
+              <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-700 dark:text-brandCyan">AI SCANNER</span>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+              Point your phone camera at physical paper receipts, thermal slips, or supplier invoices. AMS extracts vendors, line items, and totals in 0.4 seconds.
+            </p>
+            <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+              <li class="flex items-start gap-2">✓ <span><strong>Optical Character Recognition (OCR)</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Auto-Extracts Line Items for Restock</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>MTN & Telecel MoMo SMS Paste</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Automatic Ledger Expense Mapping</strong></span></li>
+            </ul>
+          </div>
+          <span class="text-xs font-bold text-cyan-600 dark:text-brandCyan">Included on Mobile & Desktop</span>
+        </div>
+
+        <!-- MODULE 3: MASTER OWNER PIN SECURITY VAULT -->
+        <div id="security" class="glass-panel-interactive p-6 rounded-3xl border border-slate-200 dark:border-white/10 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-purple-500/15 text-purple-600 dark:text-brandViolet font-black text-2xl flex items-center justify-center mb-5">
+              🛡️
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <h3 class="text-lg font-black text-slate-900 dark:text-white">3. Master Owner PIN Vault</h3>
+              <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-purple-500/20 text-purple-700 dark:text-purple-300">PROTECTION</span>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+              Cashiers use the store tablet for fast customer checkout, but your daily profits, bank balances, and owner equity remain locked behind a 4-6 digit Master PIN.
+            </p>
+            <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+              <li class="flex items-start gap-2">✓ <span><strong>Isolated PIN Per User Account</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Cashier POS Mode (Zero Profit View)</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>CPA Auditor Mode (Read-Only Books)</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Staff Directory & Team Permissions</strong></span></li>
+            </ul>
+          </div>
+          <span class="text-xs font-bold text-purple-600 dark:text-purple-300">Guaranteed Staff Separation</span>
+        </div>
+
+        <!-- MODULE 4: BARCODE SCANNING & SMART INVENTORY -->
+        <div class="glass-panel-interactive p-6 rounded-3xl border border-slate-200 dark:border-white/10 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-600 dark:text-brandEmerald font-black text-2xl flex items-center justify-center mb-5">
+              📦
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <h3 class="text-lg font-black text-slate-900 dark:text-white">4. Smart Inventory & POS</h3>
+              <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-brandEmerald/20 text-emerald-700 dark:text-brandEmerald">BARCODE READY</span>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+              Scan barcodes using your phone camera or USB handheld laser scanner. AMS auto-computes stock quantities, cost prices, and profit margins.
+            </p>
+            <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+              <li class="flex items-start gap-2">✓ <span><strong>Target Margin Pricing (% Markup)</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Low-Stock Radar & Reorder Alerts</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Batch Restocking from Supplier Invoices</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Multi-Branch Warehouse Tracking</strong></span></li>
+            </ul>
+          </div>
+          <span class="text-xs font-bold text-emerald-600 dark:text-brandEmerald">Supports 100,000+ SKUs</span>
+        </div>
+
+        <!-- MODULE 5: INVOICING, QUOTES & WHATSAPP BILLING -->
+        <div class="glass-panel-interactive p-6 rounded-3xl border border-slate-200 dark:border-white/10 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-blue-500/15 text-blue-600 dark:text-blue-400 font-black text-2xl flex items-center justify-center mb-5">
+              🧾
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <h3 class="text-lg font-black text-slate-900 dark:text-white">5. Invoices & WhatsApp Delivery</h3>
+              <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-blue-500/20 text-blue-700 dark:text-blue-300">1-TAP PDF</span>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+              Generate clean PDF invoices branded with your company logo, payment QR codes, and MoMo paybill instructions. Send to clients on WhatsApp in 1 tap.
+            </p>
+            <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+              <li class="flex items-start gap-2">✓ <span><strong>Professional PDF Invoicing</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>1-Click WhatsApp Client Dispatch</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Partial Deposits & Installment Tracking</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Proforma Quotes to Invoice Conversion</strong></span></li>
+            </ul>
+          </div>
+          <span class="text-xs font-bold text-blue-600 dark:text-blue-400">Branded with your logo</span>
+        </div>
+
+        <!-- MODULE 6: CUSTOMER DEBT RECOVERY BOOK -->
+        <div class="glass-panel-interactive p-6 rounded-3xl border border-slate-200 dark:border-white/10 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-600 dark:text-amber-400 font-black text-2xl flex items-center justify-center mb-5">
+              👥
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <h3 class="text-lg font-black text-slate-900 dark:text-white">6. Customer Debt Recovery Book</h3>
+              <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-amber-500/20 text-amber-700 dark:text-amber-300">CREDIT LEDGER</span>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+              Track exactly who owes your business, when credit was taken, and send polite WhatsApp reminder statements with embedded MoMo payment details.
+            </p>
+            <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+              <li class="flex items-start gap-2">✓ <span><strong>Customer Ledger Statement Generation</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Aging Debt Breakdown (30, 60, 90+ Days)</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Customer Credit Limits & Warnings</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Instant MoMo Repayment Settlement</strong></span></li>
+            </ul>
+          </div>
+          <span class="text-xs font-bold text-amber-600 dark:text-amber-400">Zero Uncollected Debts</span>
+        </div>
+
+        <!-- MODULE 7: DOUBLE-ENTRY GENERAL LEDGER -->
+        <div class="glass-panel-interactive p-6 rounded-3xl border border-slate-200 dark:border-white/10 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-rose-500/15 text-rose-600 dark:text-rose-400 font-black text-2xl flex items-center justify-center mb-5">
+              📋
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <h3 class="text-lg font-black text-slate-900 dark:text-white">7. Real-Time General Ledger</h3>
+              <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-rose-500/20 text-rose-700 dark:text-rose-300">DOUBLE ENTRY</span>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+              Real double-entry bookkeeping without the academic complexity. Every sale, restock, expense, and transfer balances automatically behind the scenes.
+            </p>
+            <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+              <li class="flex items-start gap-2">✓ <span><strong>Automatic Chart of Accounts</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Debit & Credit Audit Trail Transparency</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Filterable Outflow Stream by Category</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>1-Click CSV & Excel Ledger Exports</strong></span></li>
+            </ul>
+          </div>
+          <span class="text-xs font-bold text-rose-600 dark:text-rose-400">100% Mathematically Balanced</span>
+        </div>
+
+        <!-- MODULE 8: FIXED ASSETS & CAPITAL ALLOWANCES -->
+        <div class="glass-panel-interactive p-6 rounded-3xl border border-slate-200 dark:border-white/10 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 font-black text-2xl flex items-center justify-center mb-5">
+              🏢
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <h3 class="text-lg font-black text-slate-900 dark:text-white">8. Fixed Assets & Depreciation</h3>
+              <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-700 dark:text-indigo-300">CAPITAL TAX</span>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+              Track business machinery, delivery motorbikes, land, refrigeration, and computer equipment with automated straight-line depreciation.
+            </p>
+            <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+              <li class="flex items-start gap-2">✓ <span><strong>Asset Register with Purchase Valuation</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Depreciation Schedules for Tax Relief</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>GRA Capital Allowances Class 1-4</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Asset Disposal & Book Gain/Loss Logging</strong></span></li>
+            </ul>
+          </div>
+          <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">Accurate Balance Sheet Equity</span>
+        </div>
+
+        <!-- MODULE 9: GRA TAX & VAT FLAT RATE ENGINE -->
+        <div id="tax-gra" class="glass-panel-interactive p-6 rounded-3xl border border-slate-200 dark:border-white/10 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-600 dark:text-amber-400 font-black text-2xl flex items-center justify-center mb-5">
+              🇬🇭
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <h3 class="text-lg font-black text-slate-900 dark:text-white">9. GRA VAT & Tax Schedule</h3>
+              <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-amber-500/20 text-amber-700 dark:text-amber-300">GHANA REVENUE</span>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+              Pre-configured for Ghana Revenue Authority compliance. Supports both the 3% VAT Flat Rate (+1% COVID-19 Levy) and Standard 15% VAT + NHIL + GETFund.
+            </p>
+            <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+              <li class="flex items-start gap-2">✓ <span><strong>GRA Flat Rate Scheme (3% + 1%)</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Standard VAT (15% + 2.5% NHIL + 2.5% GETFund)</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Withholding Tax (WHT) Inflow/Outflow Tracker</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>1-Tap Quarterly Tax Filing Statement Export</strong></span></li>
+            </ul>
+          </div>
+          <span class="text-xs font-bold text-amber-600 dark:text-amber-400">Zero GRA Penalties</span>
+        </div>
+
+        <!-- MODULE 10: FINANCIAL STATEMENTS & PDF REPORTS -->
+        <div class="glass-panel-interactive p-6 rounded-3xl border border-slate-200 dark:border-white/10 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-600 dark:text-brandEmerald font-black text-2xl flex items-center justify-center mb-5">
+              📊
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <h3 class="text-lg font-black text-slate-900 dark:text-white">10. 1-Tap Financial Statements</h3>
+              <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-brandEmerald/20 text-emerald-700 dark:text-brandEmerald">BANK AUDIT</span>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+              Export standard certified financial statements instantly in clean PDF or Excel. Ready for commercial bank loan applications, investors, and CPAs.
+            </p>
+            <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+              <li class="flex items-start gap-2">✓ <span><strong>Balance Sheet (Statement of Financial Position)</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Profit & Loss (Income Statement)</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Cash Flow Statement (Operating/Investing)</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Adjusted Trial Balance for External CPAs</strong></span></li>
+            </ul>
+          </div>
+          <span class="text-xs font-bold text-emerald-600 dark:text-brandEmerald">Certified Financial Format</span>
+        </div>
+
+        <!-- MODULE 11: OFFLINE-FIRST PERSISTENCE & SYNC -->
+        <div class="glass-panel-interactive p-6 rounded-3xl border border-slate-200 dark:border-white/10 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-cyan-500/15 text-cyan-600 dark:text-brandCyan font-black text-2xl flex items-center justify-center mb-5">
+              📶
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <h3 class="text-lg font-black text-slate-900 dark:text-white">11. 100% Offline-First Engine</h3>
+              <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-700 dark:text-brandCyan">ZERO DOWNTIME</span>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+              Internet down? No problem. Record sales, issue receipts, and scan inventory without an active internet connection. Syncs automatically to Supabase cloud when back online.
+            </p>
+            <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+              <li class="flex items-start gap-2">✓ <span><strong>Persistent Local Database Cache</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Background Conflict-Free Cloud Sync</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Fixed Desktop Port 32800 Origin Persistence</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Zero Store Halts During Network Outages</strong></span></li>
+            </ul>
+          </div>
+          <span class="text-xs font-bold text-cyan-600 dark:text-brandCyan">Uninterrupted Operations</span>
+        </div>
+
+        <!-- MODULE 12: THERMAL PRINTING & HARDWARE INTEGRATION -->
+        <div class="glass-panel-interactive p-6 rounded-3xl border border-slate-200 dark:border-white/10 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-purple-500/15 text-purple-600 dark:text-brandViolet font-black text-2xl flex items-center justify-center mb-5">
+              🖨️
+            </div>
+            <div class="flex items-center gap-2 mb-2">
+              <h3 class="text-lg font-black text-slate-900 dark:text-white">12. POS Hardware & Thermal Printing</h3>
+              <span class="text-[9px] font-extrabold px-2 py-0.5 rounded bg-purple-500/20 text-purple-700 dark:text-purple-300">ESC/POS</span>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+              Seamlessly connect standard 58mm and 80mm ESC/POS thermal receipt printers via Bluetooth or USB, along with automatic cash drawer kicks.
+            </p>
+            <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-2 mb-6">
+              <li class="flex items-start gap-2">✓ <span><strong>Bluetooth & USB ESC/POS Receipt Printing</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>58mm & 80mm Paper Width Formatting</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Automatic Cash Drawer Kick Triggers</strong></span></li>
+              <li class="flex items-start gap-2">✓ <span><strong>Handheld & Hands-Free Barcode Scanners</strong></span></li>
+            </ul>
+          </div>
+          <span class="text-xs font-bold text-purple-600 dark:text-purple-300">Complete Store Hardware Support</span>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ======================================================== -->
+  <!-- FEATURE FOCUS: 60-SECOND UNIVERSAL DATA MIGRATION        -->
+  <!-- ======================================================== -->
+  <section id="migration" class="py-24 bg-white dark:bg-obsidian border-t border-slate-200 dark:border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-extrabold uppercase tracking-widest text-emerald-600 dark:text-brandEmerald px-3 py-1 rounded-full bg-brandEmerald/10 border border-brandEmerald/20">
+          60-Second Onboarding
+        </span>
+        <h2 class="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white mt-4 tracking-tight">
+          How the 60-Second Migration Engine Works.
+        </h2>
+        <p class="text-slate-600 dark:text-slate-400 mt-4 text-base">
+          Moving your business records has never been this simple. Drop your multi-sheet files and let AMS automatically structure your accounting in 3 steps.
+        </p>
+      </div>
+
+      <!-- 3-STEP VISUAL PIPELINE -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        
+        <div class="glass-panel p-8 rounded-3xl border border-slate-200 dark:border-white/10 relative">
+          <div class="w-12 h-12 rounded-2xl bg-brandEmerald/15 text-emerald-600 dark:text-brandEmerald font-black text-xl flex items-center justify-center mb-6">
+            1
+          </div>
+          <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Drop Any Spreadsheet</h4>
+          <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            Upload .xlsx, .xls, .csv, or .tsv files. If your workbook has multiple tabs (e.g. "Inventory", "Debtors", "Expenses"), AMS auto-discovers all sheets.
+          </p>
+        </div>
+
+        <div class="glass-panel p-8 rounded-3xl border border-slate-200 dark:border-white/10 relative">
+          <div class="w-12 h-12 rounded-2xl bg-cyan-500/15 text-cyan-600 dark:text-brandCyan font-black text-xl flex items-center justify-center mb-6">
+            2
+          </div>
+          <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">AI Auto-Classification</h4>
+          <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            The engine inspects column headers (SKU, Price, Balance, Asset, Date) and automatically matches them to their exact database tables with 0 manual mapping.
+          </p>
+        </div>
+
+        <div class="glass-panel p-8 rounded-3xl border border-slate-200 dark:border-white/10 relative">
+          <div class="w-12 h-12 rounded-2xl bg-purple-500/15 text-purple-600 dark:text-brandViolet font-black text-xl flex items-center justify-center mb-6">
+            3
+          </div>
+          <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">1-Tap Ingestion</h4>
+          <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            Preview the detected records, select your profit margin auto-multiplier, and click Ingest. Your entire company history is live and ready to sell!
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ======================================================== -->
+  <!-- MULTI-PLATFORM DOWNLOAD HUB                              -->
+  <!-- ======================================================== -->
+  <section id="downloads" class="py-24 bg-slate-100/70 dark:bg-brandSurface/40 border-t border-slate-200 dark:border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      
+      <div class="w-20 h-20 flex items-center justify-center mx-auto mb-4 drop-shadow-xl">
+        <svg viewBox="0 0 1000 1000" class="w-16 h-16 fill-slate-900 dark:fill-white">
+          <polygon points="500,80 860,880 710,880 500,410 290,880 140,880" />
+          <polygon points="500,530 635,880 365,880" />
+        </svg>
+      </div>
+
+      <h2 class="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight mb-4">
+        Download AMS for Your Workstation.
+      </h2>
+      
+      <p class="text-slate-600 dark:text-slate-400 text-base sm:text-lg mb-16 max-w-2xl mx-auto">
+        Install the native desktop application on your PC or laptop, and download the mobile app for your phone or shop tablet.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto text-left">
+        
+        <!-- CARD 1: WINDOWS DESKTOP APP -->
+        <div class="glass-panel p-8 rounded-3xl border-2 border-brandCyan relative flex flex-col justify-between shadow-xl">
+          <div class="absolute -top-3 left-6 px-3 py-1 rounded-full bg-brandCyan text-black font-extrabold text-[10px] uppercase tracking-wider">
+            Primary Workstation
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-cyan-500/15 text-cyan-600 dark:text-brandCyan flex items-center justify-center text-2xl">
+                💻
+              </div>
+              <span class="text-xs font-mono font-bold px-2 py-1 rounded bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-300">v1.0.1</span>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white">AMS for Windows</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-6">Windows 10 / 11 (64-bit)</p>
+
+            <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-2.5 mb-8">
+              <li class="flex items-center gap-2">✓ <span>60-Second Data Migration Engine</span></li>
+              <li class="flex items-center gap-2">✓ <span>Permanent local database persistence</span></li>
+              <li class="flex items-center gap-2">✓ <span>Instant keyboard shortcut sales</span></li>
+              <li class="flex items-center gap-2">✓ <span>100% Offline-first speed</span></li>
+            </ul>
+          </div>
+
+          <div class="space-y-2">
+            <a href="downloads/AMS_Accounting_Setup_1.0.1.exe" download class="w-full text-center py-3.5 rounded-xl text-xs font-extrabold text-black bg-brandCyan hover:bg-brandCyanGlow transition flex items-center justify-center gap-2 shadow-lg shadow-brandCyan/20">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+              <span>Download Windows Installer (.exe)</span>
+            </a>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400 text-center font-mono">64-bit NSIS Package · Safe & Verified</p>
+          </div>
+        </div>
+
+        <!-- CARD 2: ANDROID MOBILE APK -->
+        <div class="glass-panel p-8 rounded-3xl border-2 border-brandEmerald relative flex flex-col justify-between shadow-xl">
+          <div class="absolute -top-3 left-6 px-3 py-1 rounded-full bg-brandEmerald text-black font-extrabold text-[10px] uppercase tracking-wider">
+            Mobile & Shop Floor
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-600 dark:text-brandEmerald flex items-center justify-center text-2xl">
+                📱
+              </div>
+              <span class="text-xs font-mono font-bold px-2 py-1 rounded bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-300">Android APK</span>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white">AMS for Android</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-6">Phones & Tablets (Android 8.0+)</p>
+
+            <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-2.5 mb-8">
+              <li class="flex items-center gap-2">✓ <span>Vision AI Camera Receipt OCR</span></li>
+              <li class="flex items-center gap-2">✓ <span>Barcode Scanning Point-of-Sale</span></li>
+              <li class="flex items-center gap-2">✓ <span>WhatsApp PDF Invoices with MoMo</span></li>
+              <li class="flex items-center gap-2">✓ <span>Master Owner PIN Security Vault</span></li>
+            </ul>
+          </div>
+
+          <div class="space-y-2">
+            <a href="https://expo.dev/accounts/ams-accounting-made-simple/projects/leoderksen/builds/b979eb2a-2857-45a3-be21-78c3b79b4eec" target="_blank" class="w-full text-center py-3.5 rounded-xl text-xs font-extrabold text-black bg-brandEmerald hover:bg-brandEmeraldLight transition flex items-center justify-center gap-2 shadow-lg shadow-brandEmerald/20">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+              <span>Download Android APK</span>
+            </a>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400 text-center font-mono">Standalone APK · Direct Install</p>
+          </div>
+        </div>
+
+        <!-- CARD 3: WEB WORKSTATION & iOS -->
+        <div class="glass-panel p-8 rounded-3xl border border-slate-200 dark:border-white/10 relative flex flex-col justify-between shadow-xl">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-slate-200 dark:bg-white/10 text-slate-900 dark:text-white flex items-center justify-center text-2xl">
+                🌐
+              </div>
+              <span class="text-xs font-mono font-bold px-2 py-1 rounded bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-300">Cloud Web</span>
+            </div>
+
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Web Companion & iOS</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-6">Safari, Chrome, Edge & iOS PWA</p>
+
+            <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-2.5 mb-8">
+              <li class="flex items-center gap-2">✓ <span>Log in from any device or laptop</span></li>
+              <li class="flex items-center gap-2">✓ <span>CPA remote audit access</span></li>
+              <li class="flex items-center gap-2">✓ <span>Add to iPhone Home Screen as App</span></li>
+              <li class="flex items-center gap-2">✓ <span>Zero software installation required</span></li>
+            </ul>
+          </div>
+
+          <div class="space-y-2">
+            <a href="https://ams-8nhc3v8sk-fms11.vercel.app" target="_blank" class="w-full text-center py-3.5 rounded-xl text-xs font-extrabold text-slate-900 dark:text-white bg-slate-200 dark:bg-white/10 hover:bg-slate-300 dark:hover:bg-white/15 transition flex items-center justify-center gap-2">
+              <span>Launch Web Companion →</span>
+            </a>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400 text-center font-mono">Instant browser access</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ======================================================== -->
+  <!-- TRANSPARENT PRICING                                      -->
+  <!-- ======================================================== -->
+  <section id="pricing" class="py-24 bg-white dark:bg-obsidian border-t border-slate-200 dark:border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-extrabold uppercase tracking-widest text-emerald-600 dark:text-brandEmerald px-3 py-1 rounded-full bg-brandEmerald/10 border border-brandEmerald/20">
+          Simple Pricing
+        </span>
+        <h2 class="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white mt-4 tracking-tight">
+          Start Free for 30 Days.
+        </h2>
+        <p class="text-slate-600 dark:text-slate-400 mt-4 text-base">
+          No credit card required upfront. Complete access across Desktop, Mobile, and Web.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto items-stretch">
+        
+        <!-- FREE TIER -->
+        <div class="glass-panel p-8 rounded-3xl border border-slate-200 dark:border-white/10 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">Starter Free</h3>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Basic</span>
+            </div>
+            <p class="text-3xl font-black text-slate-900 dark:text-white mb-2 font-mono">GHS 0 <span class="text-xs font-normal text-slate-500 dark:text-slate-400">/ forever</span></p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">Essential bookkeeping for solo shopkeepers.</p>
+            
+            <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-3 mb-8">
+              <li class="flex items-center gap-2">✓ <span>50 Transactions / month</span></li>
+              <li class="flex items-center gap-2">✓ <span>Manual Ledger & Bookkeeping</span></li>
+              <li class="flex items-center gap-2">✓ <span>Basic Profit & Loss report</span></li>
+              <li class="flex items-center gap-2">✓ <span>Offline-first local sync</span></li>
+            </ul>
+          </div>
+
+          <a href="#downloads" class="w-full text-center py-3 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 transition">
+            Get Started Free
+          </a>
+        </div>
+
+        <!-- PRO GROWTH (FEATURED) -->
+        <div class="glass-panel p-8 rounded-3xl border-2 border-brandEmerald relative flex flex-col justify-between shadow-xl shadow-brandEmerald/10 transform md:-translate-y-2">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-brandEmerald text-black font-extrabold text-[10px] uppercase tracking-wider">
+            Most Popular for Shops
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">Pro Growth</h3>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-brandEmerald/20 text-emerald-700 dark:text-brandEmerald">30-Day Free</span>
+            </div>
+            <p class="text-3xl font-black text-emerald-600 dark:text-brandEmerald mb-2 font-mono">GHS 89 <span class="text-xs font-normal text-slate-500 dark:text-slate-400">/ month</span></p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">Automate your store with Vision AI OCR and WhatsApp invoicing.</p>
+            
+            <ul class="text-xs text-slate-800 dark:text-slate-200 space-y-3 mb-8">
+              <li class="flex items-center gap-2">✓ <strong>Unlimited Transactions & Revenue</strong></li>
+              <li class="flex items-center gap-2">✓ <strong>60-Second Data Migration Engine</strong></li>
+              <li class="flex items-center gap-2">✓ <strong>AI Vision Receipt Scanning (OCR)</strong></li>
+              <li class="flex items-center gap-2">✓ <strong>MoMo SMS Auto-Extraction</strong></li>
+              <li class="flex items-center gap-2">✓ <strong>WhatsApp & PDF Invoicing with MoMo</strong></li>
+              <li class="flex items-center gap-2">✓ <strong>Master Owner PIN Protection</strong></li>
+            </ul>
+          </div>
+
+          <a href="#downloads" class="w-full text-center py-3.5 rounded-xl text-xs font-extrabold text-black bg-brandEmerald hover:bg-brandEmeraldLight shadow-lg shadow-brandEmerald/20 transition">
+            Start 30-Day Free Trial
+          </a>
+        </div>
+
+        <!-- BUSINESS / CPA -->
+        <div class="glass-panel p-8 rounded-3xl border border-slate-200 dark:border-white/10 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">Business / CPA</h3>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-purple-500/20 text-purple-700 dark:text-purple-300">Multi-User</span>
+            </div>
+            <p class="text-3xl font-black text-slate-900 dark:text-white mb-2 font-mono">GHS 249 <span class="text-xs font-normal text-slate-500 dark:text-slate-400">/ month</span></p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">For multi-cashier stores, branches, or external accountants.</p>
+            
+            <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-3 mb-8">
+              <li class="flex items-center gap-2">✓ <span>Everything in Pro Growth</span></li>
+              <li class="flex items-center gap-2">✓ <strong>Unlimited Cashiers & Team Accounts</strong></li>
+              <li class="flex items-center gap-2">✓ <strong>CPA Audit & Trial Balance Hub</strong></li>
+              <li class="flex items-center gap-2">✓ <strong>GRA VAT & Flat Rate Filing Export</strong></li>
+              <li class="flex items-center gap-2">✓ <strong>Multi-branch stock & sales sync</strong></li>
+            </ul>
+          </div>
+
+          <a href="#downloads" class="w-full text-center py-3 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 transition">
+            Choose Business Plan
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ======================================================== -->
+  <!-- FOOTER                                                   -->
+  <!-- ======================================================== -->
+  <footer class="py-12 bg-white dark:bg-black border-t border-slate-200 dark:border-white/10 text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      
+      <div class="flex items-center gap-3">
+        <svg viewBox="0 0 1000 1000" class="w-6 h-6 fill-slate-900 dark:fill-white">
+          <polygon points="500,80 860,880 710,880 500,410 290,880 140,880" />
+          <polygon points="500,530 635,880 365,880" />
+        </svg>
+        <span class="text-slate-700 dark:text-slate-400 font-bold">AMS — Accounting Management System</span>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <a href="https://ams-8nhc3v8sk-fms11.vercel.app/terms" target="_blank" class="hover:text-slate-900 dark:hover:text-slate-300 transition">Terms of Service</a>
+        <a href="https://ams-8nhc3v8sk-fms11.vercel.app/privacy" target="_blank" class="hover:text-slate-900 dark:hover:text-slate-300 transition">Privacy Policy</a>
+        <a href="https://ams-8nhc3v8sk-fms11.vercel.app" target="_blank" class="hover:text-slate-900 dark:hover:text-slate-300 transition">Web Companion</a>
+      </div>
+
+      <p>© 2026 AMS. Built for Modern Business.</p>
+
+    </div>
+  </footer>
+
+
+  <!-- ======================================================== -->
+  <!-- THEME SWITCHER JAVASCRIPT LOGIC                          -->
+  <!-- ======================================================== -->
+  <script>
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const darkIcon = document.getElementById('theme-toggle-dark-icon');
+    const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+    // Default to light mode unless explicitly set to 'dark' in localStorage
+    const savedTheme = localStorage.getItem('ams_theme');
+    const isDark = savedTheme === 'dark';
+
+    function setDarkMode(enableDark) {
+      if (enableDark) {
+        document.documentElement.classList.add('dark');
+        darkIcon.classList.remove('hidden');
+        lightIcon.classList.add('hidden');
+        localStorage.setItem('ams_theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        darkIcon.classList.add('hidden');
+        lightIcon.classList.remove('hidden');
+        localStorage.setItem('ams_theme', 'light');
+      }
+    }
+
+    // Initialize theme (Defaults to Light)
+    setDarkMode(isDark);
+
+    // Toggle event listener
+    themeToggleBtn.addEventListener('click', () => {
+      const currentlyDark = document.documentElement.classList.contains('dark');
+      setDarkMode(!currentlyDark);
+    });
+  </script>
+
+</body>
+</html>

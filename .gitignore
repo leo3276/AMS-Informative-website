@@ -1,0 +1,4 @@
+# Ignore large desktop installer binaries in git (host via GitHub Releases)
+downloads/*.exe
+*.zip
+*.tar.gz
