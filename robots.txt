@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ams-informative-website.vercel.app/sitemap.xml
