@@ -227,25 +227,23 @@
         </div>
       </div>
 
-      <!-- Navigation Links -->
-      <nav class="hidden lg:flex items-center gap-6 text-xs font-bold text-slate-600 dark:text-slate-300">
-        <a href="#all-features" class="hover:text-brandEmerald transition">All Capabilities</a>
-        <a href="#upcoming-archetypes" class="hover:text-purple-400 transition flex items-center gap-1.5">
-          <span>🚀 All Business Types</span>
+      <!-- Navigation Links (Streamlined for Desktop) -->
+      <nav class="hidden xl:flex items-center gap-7 text-xs font-bold text-slate-600 dark:text-slate-300">
+        <a href="#all-features" class="hover:text-brandEmerald transition">Capabilities</a>
+        <a href="#upcoming-archetypes" class="hover:text-purple-400 transition flex items-center gap-1.5 bg-purple-500/10 px-3 py-1.5 rounded-full border border-purple-500/20">
+          <span>🚀 All Businesses</span>
           <span class="px-1.5 py-0.5 rounded text-[8px] bg-purple-500 text-white font-extrabold tracking-wider">NEXT UPDATE</span>
         </a>
         <a href="#migration" class="hover:text-brandEmerald transition flex items-center gap-1">
           <span>⚡ 60s Migration</span>
           <span class="px-1.5 py-0.5 rounded text-[8px] bg-brandEmerald text-black font-black">FAST</span>
         </a>
-        <a href="#security" class="hover:text-brandEmerald transition">Owner PIN</a>
-        <a href="#tax-gra" class="hover:text-brandEmerald transition">GRA Tax</a>
         <a href="#downloads" class="hover:text-brandEmerald transition">Downloads</a>
         <a href="#pricing" class="hover:text-brandEmerald transition">Pricing (Free)</a>
       </nav>
 
       <!-- Action Buttons & Light/Dark Switcher -->
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 sm:gap-3">
         
         <!-- Light / Dark Mode Toggle Button -->
         <button id="theme-toggle" aria-label="Toggle Light/Dark Mode" class="p-2.5 rounded-xl bg-slate-100 dark:bg-white/10 border border-slate-200 dark:border-white/15 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-white/20 transition flex items-center justify-center">
@@ -253,17 +251,47 @@
           <span id="theme-toggle-light-icon" class="hidden text-sm">☀️</span>
         </button>
 
-        <a href="https://ams-8nhc3v8sk-fms11.vercel.app" target="_blank" class="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:bg-slate-200 dark:hover:bg-white/10 transition">
+        <a href="https://ams-8nhc3v8sk-fms11.vercel.app" target="_blank" class="hidden md:inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:bg-slate-200 dark:hover:bg-white/10 transition">
           <span>🌐 Web Login</span>
         </a>
 
-        <a href="#downloads" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-extrabold text-black bg-brandEmerald hover:bg-brandEmeraldLight shadow-lg shadow-brandEmerald/25 transition transform hover:-translate-y-0.5">
+        <a href="#downloads" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-extrabold text-black bg-brandEmerald hover:bg-brandEmeraldLight shadow-lg shadow-brandEmerald/25 transition transform hover:-translate-y-0.5">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
           <span>Get Free Access</span>
         </a>
+
+        <!-- Mobile Menu Hamburger Button -->
+        <button id="mobile-menu-btn" aria-label="Open Mobile Menu" class="xl:hidden p-2.5 rounded-xl bg-slate-100 dark:bg-white/10 border border-slate-200 dark:border-white/15 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-white/20 transition flex items-center justify-center">
+          <svg id="mobile-open-svg" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+          <svg id="mobile-close-svg" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+
       </div>
 
     </div>
+
+    <!-- Mobile Drawer Dropdown -->
+    <div id="mobile-menu-drawer" class="hidden xl:hidden border-t border-slate-200 dark:border-white/10 bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl px-5 py-6 space-y-4 shadow-2xl">
+      <a href="#all-features" class="mobile-nav-link block text-sm font-bold text-slate-800 dark:text-slate-200 hover:text-brandEmerald">All Capabilities</a>
+      <a href="#upcoming-archetypes" class="mobile-nav-link flex items-center justify-between text-sm font-bold text-purple-600 dark:text-purple-400">
+        <span>🚀 All Business Types</span>
+        <span class="px-2 py-0.5 rounded text-[9px] bg-purple-500 text-white font-extrabold">NEXT UPDATE</span>
+      </a>
+      <a href="#migration" class="mobile-nav-link flex items-center justify-between text-sm font-bold text-slate-800 dark:text-slate-200 hover:text-brandEmerald">
+        <span>⚡ 60s Migration</span>
+        <span class="px-2 py-0.5 rounded text-[9px] bg-brandEmerald text-black font-black">FAST</span>
+      </a>
+      <a href="#security" class="mobile-nav-link block text-sm font-bold text-slate-800 dark:text-slate-200 hover:text-brandEmerald">Owner PIN &amp; Security</a>
+      <a href="#tax-gra" class="mobile-nav-link block text-sm font-bold text-slate-800 dark:text-slate-200 hover:text-brandEmerald">GRA Tax Compliance</a>
+      <a href="#downloads" class="mobile-nav-link block text-sm font-bold text-slate-800 dark:text-slate-200 hover:text-brandEmerald">Downloads (Desktop &amp; Mobile)</a>
+      <a href="#pricing" class="mobile-nav-link block text-sm font-bold text-slate-800 dark:text-slate-200 hover:text-brandEmerald">Pricing (Free Until 2027)</a>
+      
+      <div class="pt-4 border-t border-slate-200 dark:border-white/10 flex flex-col gap-2.5">
+        <a href="https://ams-8nhc3v8sk-fms11.vercel.app" target="_blank" class="w-full text-center py-3 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">🌐 Open Web Workstation</a>
+        <a href="#downloads" class="mobile-nav-link w-full text-center py-3 rounded-xl text-xs font-extrabold text-black bg-brandEmerald hover:bg-brandEmeraldLight shadow-lg shadow-brandEmerald/20">Download Free Apps</a>
+      </div>
+    </div>
+
   </header>
 
 
@@ -736,8 +764,8 @@
         </p>
       </div>
 
-      <!-- 7 Archetype Interactive Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+      <!-- 7 Archetype Responsive Interactive Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6 mb-16">
         
         <!-- CARD 1: SCHOOLS & ACADEMIES -->
         <div class="p-6 rounded-3xl bg-white/5 border border-purple-500/20 hover:border-purple-400/50 transition duration-300 backdrop-blur-xl group flex flex-col justify-between">
@@ -826,7 +854,36 @@
           </div>
         </div>
 
-        <!-- CARD 4: RESTAURANTS & HOSPITALITY -->
+        <!-- CARD 4: CORPORATE & LEGAL (NEW ADDITION) -->
+        <div class="p-6 rounded-3xl bg-white/5 border border-indigo-500/20 hover:border-indigo-400/50 transition duration-300 backdrop-blur-xl group flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-300 flex items-center justify-center text-2xl group-hover:scale-110 transition">
+                ⚖️
+              </div>
+              <span class="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-indigo-500/20 text-indigo-200 border border-indigo-400/30">
+                Corporate &amp; Legal
+              </span>
+            </div>
+
+            <h3 class="text-lg font-bold text-white mb-2">Law Firms, Clinics &amp; Agencies</h3>
+            <p class="text-xs text-slate-400 mb-5 leading-relaxed">
+              Professional billings for solicitors, medical clinics, tech agencies, logistics &amp; real estate managers.
+            </p>
+
+            <ul class="text-xs text-slate-300 space-y-2.5 mb-6">
+              <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> <span><strong>Client Retainers &amp; Case/Patient Files</strong></span></li>
+              <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> <span><strong>Milestone Project Invoicing with VAT</strong></span></li>
+              <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> <span><strong>Formal Executive PDF Quotations</strong></span></li>
+              <li class="flex items-center gap-2"><span class="text-indigo-400">✓</span> <span><strong>Consultation &amp; Diagnostic Fee Billing</strong></span></li>
+            </ul>
+          </div>
+          <div class="pt-4 border-t border-white/10 text-[11px] text-indigo-300 font-semibold flex items-center gap-1">
+            <span>Pure Billable Services · Retainers · Formal Quotes</span>
+          </div>
+        </div>
+
+        <!-- CARD 5: RESTAURANTS & HOSPITALITY -->
         <div class="p-6 rounded-3xl bg-white/5 border border-amber-500/20 hover:border-amber-400/50 transition duration-300 backdrop-blur-xl group flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-4">
@@ -855,7 +912,7 @@
           </div>
         </div>
 
-        <!-- CARD 5: CHURCHES & NON-PROFITS -->
+        <!-- CARD 6: CHURCHES & NON-PROFITS -->
         <div class="p-6 rounded-3xl bg-white/5 border border-cyan-500/20 hover:border-cyan-400/50 transition duration-300 backdrop-blur-xl group flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-4">
@@ -884,7 +941,7 @@
           </div>
         </div>
 
-        <!-- CARD 6: FARMS & AGRIBUSINESS -->
+        <!-- CARD 7: FARMS & AGRIBUSINESS -->
         <div class="p-6 rounded-3xl bg-white/5 border border-lime-500/20 hover:border-lime-400/50 transition duration-300 backdrop-blur-xl group flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-4">
@@ -1272,6 +1329,36 @@
       const currentlyDark = document.documentElement.classList.contains('dark');
       setDarkMode(!currentlyDark);
     });
+
+    // Mobile Hamburger Menu Drawer Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenuDrawer = document.getElementById('mobile-menu-drawer');
+    const mobileOpenSvg = document.getElementById('mobile-open-svg');
+    const mobileCloseSvg = document.getElementById('mobile-close-svg');
+
+    if (mobileMenuBtn && mobileMenuDrawer) {
+      mobileMenuBtn.addEventListener('click', () => {
+        const isClosed = mobileMenuDrawer.classList.contains('hidden');
+        if (isClosed) {
+          mobileMenuDrawer.classList.remove('hidden');
+          mobileOpenSvg.classList.add('hidden');
+          mobileCloseSvg.classList.remove('hidden');
+        } else {
+          mobileMenuDrawer.classList.add('hidden');
+          mobileOpenSvg.classList.remove('hidden');
+          mobileCloseSvg.classList.add('hidden');
+        }
+      });
+
+      // Auto close mobile menu when clicking any nav link
+      document.querySelectorAll('.mobile-nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenuDrawer.classList.add('hidden');
+          mobileOpenSvg.classList.remove('hidden');
+          mobileCloseSvg.classList.add('hidden');
+        });
+      });
+    }
   </script>
 
 </body>
