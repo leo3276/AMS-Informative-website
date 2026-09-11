@@ -3,6 +3,18 @@
   "trailingSlash": false,
   "routes": [
     {
+      "src": "/favicon.ico",
+      "dest": "/favicon.ico"
+    },
+    {
+      "src": "/robots.txt",
+      "dest": "/robots.txt"
+    },
+    {
+      "src": "/sitemap.xml",
+      "dest": "/sitemap.xml"
+    },
+    {
       "src": "/images/(.*)",
       "dest": "/images/$1"
     },
