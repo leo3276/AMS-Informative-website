@@ -51,6 +51,94 @@
       background-color: #FFFFFF;
       color: #0F172A;
     }
+
+    /* ---- scroll reveal (gated on .js so no-JS visitors see everything) ---- */
+    .js [data-reveal] {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .7s cubic-bezier(.22,.61,.36,1), transform .7s cubic-bezier(.22,.61,.36,1);
+      transition-delay: var(--d, 0s);
+    }
+    .js [data-reveal].rv-in { opacity: 1; transform: none; }
+
+    /* feature-list checkmarks pop in after their card reveals */
+    .js li .ck { opacity: 0; transform: scale(.3); display: inline-block; }
+    .js .rv-in li .ck {
+      animation: ckPop .45s cubic-bezier(.34,1.56,.64,1) both;
+      animation-delay: calc(.25s + var(--i, 0) * .12s);
+    }
+    @keyframes ckPop {
+      from { opacity: 0; transform: scale(.3); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    .js li:nth-child(1) .ck { --i: 0; }
+    .js li:nth-child(2) .ck { --i: 1; }
+    .js li:nth-child(3) .ck { --i: 2; }
+    .js li:nth-child(4) .ck { --i: 3; }
+
+    /* bookkeeping bars fill once their card reveals */
+    .js .bar-fill { width: 0 !important; transition: width 1.1s cubic-bezier(.22,.61,.36,1) .35s; }
+    .js .rv-in .bar-fill { width: var(--w) !important; }
+
+    /* ledger rows light up in turn, like new entries landing */
+    @keyframes rowflash {
+      0%, 100% { background-color: transparent; }
+      6%  { background-color: rgba(16, 185, 129, 0.09); }
+      22% { background-color: transparent; }
+    }
+    .flash-row { animation: rowflash 7s ease-in-out infinite; }
+
+    /* soft attention glow on key figures */
+    @keyframes numGlow {
+      0%, 100% { text-shadow: 0 0 0 rgba(16, 185, 129, 0); }
+      50%      { text-shadow: 0 0 14px rgba(16, 185, 129, .45); }
+    }
+    .glow-em { animation: numGlow 5s ease-in-out infinite; }
+    @keyframes numGlowRose {
+      0%, 100% { text-shadow: 0 0 0 rgba(225, 29, 72, 0); }
+      50%      { text-shadow: 0 0 14px rgba(225, 29, 72, .4); }
+    }
+    .glow-rose { animation: numGlowRose 5s ease-in-out infinite; }
+
+    /* PIN dots fill like a master PIN being typed */
+    .pin-dot {
+      width: 7px; height: 7px; border-radius: 9999px;
+      background: #d1d5db; display: inline-block;
+      animation: pinDot 6s ease-in-out infinite;
+    }
+    @keyframes pinDot {
+      0%, 18% { background: #d1d5db; transform: scale(1); }
+      28%, 78% { background: #059669; transform: scale(1.2); }
+      92%, 100% { background: #d1d5db; transform: scale(1); }
+    }
+
+    /* the three import steps wave in sequence */
+    @keyframes stepWave {
+      0%, 32%, 100% { transform: translateY(0); border-color: rgb(229 231 235); }
+      10% { transform: translateY(-5px); border-color: rgb(110 231 183); }
+    }
+    .step-wave { animation: stepWave 5.6s ease-in-out infinite; }
+
+    /* Recommended badge heartbeat */
+    @keyframes badgePulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(15, 23, 42, .28); }
+      55%      { box-shadow: 0 0 0 6px rgba(15, 23, 42, 0); }
+    }
+    .badge-pulse { animation: badgePulse 2.8s ease-out infinite; }
+
+    /* pricing CTA breathing glow */
+    @keyframes ctaGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+      50%      { box-shadow: 0 0 24px 3px rgba(16, 185, 129, .35); }
+    }
+    .cta-glow { animation: ctaGlow 3.4s ease-in-out infinite; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .js [data-reveal] { opacity: 1; transform: none; transition: none; }
+      .js li .ck { opacity: 1; transform: none; animation: none; }
+      .js .bar-fill { transition: none; }
+      .flash-row, .glow-em, .glow-rose, .pin-dot, .step-wave, .badge-pulse, .cta-glow { animation: none !important; }
+    }
   </style>
 </head>
 <body class="bg-white text-slate-900 min-h-screen flex flex-col">
@@ -82,7 +170,7 @@
 
       <!-- Action Buttons -->
       <div class="flex items-center gap-3">
-        <a href="https://amsaccounting.site" target="_blank" class="hidden sm:inline-flex items-center text-sm font-medium text-slate-600 hover:text-slate-900 px-3 py-1.5 transition">
+        <a href="https://accountingmadesimpleweb.vercel.app" target="_blank" class="hidden sm:inline-flex items-center text-sm font-medium text-slate-600 hover:text-slate-900 px-3 py-1.5 transition">
           Web Login
         </a>
 
@@ -106,7 +194,7 @@
       <a href="#downloads" class="mobile-item block text-sm font-medium text-slate-700">Downloads (Windows, Mac, Android)</a>
       <a href="#pricing" class="mobile-item block text-sm font-medium text-slate-700">Pricing</a>
       <div class="pt-3 border-t border-slate-200 flex flex-col gap-2">
-        <a href="https://amsaccounting.site" target="_blank" class="text-center text-sm font-medium py-2 rounded-lg border border-slate-200">Web Login</a>
+        <a href="https://accountingmadesimpleweb.vercel.app" target="_blank" class="text-center text-sm font-medium py-2 rounded-lg border border-slate-200">Web Login</a>
         <a href="#downloads" class="mobile-item text-center text-sm font-semibold py-2 rounded-lg bg-slate-900 text-white">Download Workstation</a>
       </div>
     </div>
@@ -116,13 +204,14 @@
   <!-- ======================================================== -->
   <!-- HERO SECTION                                             -->
   <!-- ======================================================== -->
-  <section class="pt-16 pb-16 sm:pt-24 sm:pb-24">
-    <div class="max-w-4xl mx-auto px-6 text-center">
+  <section class="relative pt-16 pb-16 sm:pt-24 sm:pb-24">
+    <canvas id="ams-hero-canvas" aria-hidden="true" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
+    <div class="relative z-10 max-w-4xl mx-auto px-6 text-center">
       
       <!-- Free Access Pill -->
       <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-slate-200 bg-slate-50 text-xs font-medium text-slate-600 mb-8">
         <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-        <span>Version 1.1.1 is live · 100% Free until 2027</span>
+        <span>Version 1.1.1 is live ·</span>
       </div>
 
       <!-- Headline -->
@@ -132,7 +221,7 @@
 
       <!-- Subtitle -->
       <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed mb-10">
-        AMS replaces paper notebooks, messy spreadsheets, and complicated POS devices. Built for retail shops, supermarkets, wholesale, and services — fully functional offline on your PC, laptop, or phone.
+        AMS replaces paper notebooks, messy spreadsheets, and complicated POS devices. Built for retail shops, supermarkets, wholesale, and services fully functional offline on your PC, laptop, or phone.
       </p>
 
       <!-- Direct Downloads Row: Windows, macOS, Android -->
@@ -178,7 +267,7 @@
     </div>
 
     <!-- Application Preview Window -->
-    <div class="max-w-5xl mx-auto px-6 mt-14">
+    <div id="app-preview" data-reveal class="relative z-10 max-w-5xl mx-auto px-6 mt-14">
       <div class="rounded-2xl border border-slate-200 bg-slate-50 p-2 sm:p-3 shadow-xl">
         <div class="rounded-xl border border-slate-200 bg-white overflow-hidden text-left">
           
@@ -204,22 +293,22 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div class="p-4 rounded-xl border border-slate-100 bg-slate-50/60">
                 <p class="text-xs text-slate-500">Total Sales &amp; Inflows</p>
-                <p class="text-xl font-bold text-slate-900 mt-1">GHS 42,500.00</p>
+                <p class="text-xl font-bold text-slate-900 mt-1" data-countup="42500" data-prefix="GHS " data-decimals="2">GHS 42,500.00</p>
                 <p class="text-xs text-emerald-600 font-medium mt-1">24 completed orders</p>
               </div>
               <div class="p-4 rounded-xl border border-slate-100 bg-slate-50/60">
                 <p class="text-xs text-slate-500">Operating Expenses</p>
-                <p class="text-xl font-bold text-slate-900 mt-1">GHS 8,420.00</p>
+                <p class="text-xl font-bold text-slate-900 mt-1" data-countup="8420" data-prefix="GHS " data-decimals="2">GHS 8,420.00</p>
                 <p class="text-xs text-slate-400 mt-1">Electricity, rent &amp; wages</p>
               </div>
               <div class="p-4 rounded-xl border border-slate-100 bg-slate-50/60">
                 <p class="text-xs text-slate-500">Net Profit</p>
-                <p class="text-xl font-bold text-slate-900 mt-1">GHS 34,080.00</p>
+                <p class="text-xl font-bold text-slate-900 mt-1" data-countup="34080" data-prefix="GHS " data-decimals="2">GHS 34,080.00</p>
                 <p class="text-xs text-emerald-600 font-medium mt-1">80.2% Net Margin</p>
               </div>
               <div class="p-4 rounded-xl border border-slate-100 bg-slate-50/60">
                 <p class="text-xs text-slate-500">Safe to Spend</p>
-                <p class="text-xl font-bold text-slate-900 mt-1">GHS 28,650.00</p>
+                <p class="text-xl font-bold text-slate-900 mt-1" data-countup="28650" data-prefix="GHS " data-decimals="2">GHS 28,650.00</p>
                 <p class="text-xs text-slate-400 mt-1">After supplier obligations</p>
               </div>
             </div>
@@ -231,21 +320,21 @@
                 <span class="text-slate-400 font-normal">Updated in real time</span>
               </div>
               <div class="divide-y divide-slate-100 text-xs">
-                <div class="px-4 py-3 flex items-center justify-between">
+                <div class="px-4 py-3 flex items-center justify-between flash-row">
                   <div>
                     <p class="font-medium text-slate-900">Wholesale Order — Kofi Stores</p>
                     <p class="text-slate-400 text-[11px]">Bank / Mobile Money · 2026-11-01</p>
                   </div>
                   <span class="font-semibold text-emerald-600">+ GHS 4,200.00</span>
                 </div>
-                <div class="px-4 py-3 flex items-center justify-between">
+                <div class="px-4 py-3 flex items-center justify-between flash-row" style="animation-delay: 2.3s;">
                   <div>
                     <p class="font-medium text-slate-900">Office Stationery &amp; Receipt Rolls</p>
                     <p class="text-slate-400 text-[11px]">Operating Expense · Cash</p>
                   </div>
                   <span class="font-semibold text-slate-600">- GHS 240.00</span>
                 </div>
-                <div class="px-4 py-3 flex items-center justify-between">
+                <div class="px-4 py-3 flex items-center justify-between flash-row" style="animation-delay: 4.6s;">
                   <div>
                     <p class="font-medium text-slate-900">Retail Counter Sale #108</p>
                     <p class="text-slate-400 text-[11px]">POS Inflow · Cash</p>
@@ -271,7 +360,7 @@
       
       <!-- Story 1: POS -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <div>
+        <div data-reveal>
           <span class="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Point of Sale</span>
           <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 mt-2 mb-4">
             Fast checkout that never stops when the internet cuts off.
@@ -281,38 +370,38 @@
           </p>
           <ul class="text-sm text-slate-700 space-y-2">
             <li class="flex items-center gap-2.5">
-              <span class="text-emerald-500 font-bold">✓</span> Instant barcode scanner support
+              <span class="text-emerald-500 font-bold ck">✓</span> Instant barcode scanner support
             </li>
             <li class="flex items-center gap-2.5">
-              <span class="text-emerald-500 font-bold">✓</span> 58mm and 80mm thermal receipt printing
+              <span class="text-emerald-500 font-bold ck">✓</span> 58mm and 80mm thermal receipt printing
             </li>
             <li class="flex items-center gap-2.5">
-              <span class="text-emerald-500 font-bold">✓</span> Automatic stock deduction with every sale
+              <span class="text-emerald-500 font-bold ck">✓</span> Automatic stock deduction with every sale
             </li>
           </ul>
         </div>
-        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+        <div data-reveal style="--d:.12s" class="rounded-2xl border border-slate-200 bg-slate-50 p-6">
           <div class="flex items-center justify-between pb-3 border-b border-slate-200 text-xs font-semibold">
             <span>Sample POS Ticket #0482</span>
             <span class="text-emerald-600">Paid in Full</span>
           </div>
           <div class="py-4 space-y-2 text-xs">
-            <div class="flex justify-between">
+            <div class="flex justify-between flash-row" style="animation-delay: .5s;">
               <span>2x Paracetamol Extra 500mg</span>
               <span class="font-medium">GHS 40.00</span>
             </div>
-            <div class="flex justify-between">
+            <div class="flex justify-between flash-row" style="animation-delay: 2.8s;">
               <span>1x Vitamin C Zinc Syrups</span>
               <span class="font-medium">GHS 85.00</span>
             </div>
-            <div class="flex justify-between">
+            <div class="flex justify-between flash-row" style="animation-delay: 5.1s;">
               <span>1x Hand Sanitizer 250ml</span>
               <span class="font-medium">GHS 25.00</span>
             </div>
           </div>
           <div class="pt-3 border-t border-slate-200 flex justify-between text-sm font-bold">
             <span>Total Amount</span>
-            <span>GHS 150.00</span>
+            <span class="glow-em">GHS 150.00</span>
           </div>
           <p class="text-[11px] text-slate-400 mt-2">Tendered via MTN MoMo · Cashbook updated instantly</p>
         </div>
@@ -320,7 +409,7 @@
 
       <!-- Story 2: Bookkeeping -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <div class="order-2 md:order-1 rounded-2xl border border-slate-200 bg-slate-50 p-6">
+        <div data-reveal style="--d:.12s" class="order-2 md:order-1 rounded-2xl border border-slate-200 bg-slate-50 p-6">
           <div class="space-y-4 text-xs">
             <div>
               <div class="flex justify-between font-semibold text-slate-700 mb-1">
@@ -328,7 +417,7 @@
                 <span>GHS 42,500.00</span>
               </div>
               <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                <div class="bg-emerald-500 h-full w-full"></div>
+                <div class="bg-emerald-500 h-full bar-fill" style="--w:100%"></div>
               </div>
             </div>
             <div>
@@ -337,17 +426,17 @@
                 <span>- GHS 8,420.00</span>
               </div>
               <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                <div class="bg-slate-400 h-full w-[20%]"></div>
+                <div class="bg-slate-400 h-full bar-fill" style="--w:20%"></div>
               </div>
             </div>
             <div class="pt-3 border-t border-slate-200 flex justify-between text-sm font-bold">
               <span>Calculated Net Profit</span>
-              <span class="text-emerald-600">GHS 34,080.00</span>
+              <span class="text-emerald-600 glow-em">GHS 34,080.00</span>
             </div>
             <p class="text-[11px] text-slate-400">All numbers compute automatically without an external accountant</p>
           </div>
         </div>
-        <div class="order-1 md:order-2">
+        <div data-reveal class="order-1 md:order-2">
           <span class="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Bookkeeping</span>
           <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 mt-2 mb-4">
             Accurate financials without needing an accounting degree.
@@ -357,13 +446,13 @@
           </p>
           <ul class="text-sm text-slate-700 space-y-2">
             <li class="flex items-center gap-2.5">
-              <span class="text-emerald-500 font-bold">✓</span> Real-time Profit &amp; Loss and Balance Sheet
+              <span class="text-emerald-500 font-bold ck">✓</span> Real-time Profit &amp; Loss and Balance Sheet
             </li>
             <li class="flex items-center gap-2.5">
-              <span class="text-emerald-500 font-bold">✓</span> Safe-to-Spend runway calculation
+              <span class="text-emerald-500 font-bold ck">✓</span> Safe-to-Spend runway calculation
             </li>
             <li class="flex items-center gap-2.5">
-              <span class="text-emerald-500 font-bold">✓</span> Export clear PDF financial briefs in one click
+              <span class="text-emerald-500 font-bold ck">✓</span> Export clear PDF financial briefs in one click
             </li>
           </ul>
         </div>
@@ -371,7 +460,7 @@
 
       <!-- Story 3: Debts & Inventory -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <div>
+        <div data-reveal>
           <span class="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Debts &amp; Inventory</span>
           <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 mt-2 mb-4">
             Keep track of customer debt and supplier balances.
@@ -381,17 +470,17 @@
           </p>
           <ul class="text-sm text-slate-700 space-y-2">
             <li class="flex items-center gap-2.5">
-              <span class="text-emerald-500 font-bold">✓</span> Complete customer debt ledger with partial payment logging
+              <span class="text-emerald-500 font-bold ck">✓</span> Complete customer debt ledger with partial payment logging
             </li>
             <li class="flex items-center gap-2.5">
-              <span class="text-emerald-500 font-bold">✓</span> WhatsApp invoice &amp; statement delivery
+              <span class="text-emerald-500 font-bold ck">✓</span> WhatsApp invoice &amp; statement delivery
             </li>
             <li class="flex items-center gap-2.5">
-              <span class="text-emerald-500 font-bold">✓</span> Low-stock alerts so you reorder before running out
+              <span class="text-emerald-500 font-bold ck">✓</span> Low-stock alerts so you reorder before running out
             </li>
           </ul>
         </div>
-        <div class="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+        <div data-reveal style="--d:.12s" class="rounded-2xl border border-slate-200 bg-slate-50 p-6">
           <div class="flex items-center justify-between pb-3 border-b border-slate-200 text-xs font-semibold">
             <span>Customer Debtor Book</span>
             <span class="text-slate-500">3 Overdue Accounts</span>
@@ -402,7 +491,7 @@
                 <p class="font-medium text-slate-900">Nana Kwame Provisions</p>
                 <p class="text-slate-400 text-[11px]">Due 5 days ago · Last payment GHS 500</p>
               </div>
-              <span class="font-semibold text-rose-600">GHS 3,400.00</span>
+              <span class="font-semibold text-rose-600 glow-rose">GHS 3,400.00</span>
             </div>
             <div class="py-2.5 flex items-center justify-between">
               <div>
@@ -421,7 +510,7 @@
 
       <!-- Story 4: Master PIN -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <div class="order-2 md:order-1 rounded-2xl border border-slate-200 bg-slate-50 p-6">
+        <div data-reveal style="--d:.12s" class="order-2 md:order-1 rounded-2xl border border-slate-200 bg-slate-50 p-6">
           <div class="space-y-3 text-xs">
             <div class="p-3.5 rounded-xl border border-slate-200 bg-white">
               <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Cashier Screen</span>
@@ -431,10 +520,16 @@
             <div class="p-3.5 rounded-xl border border-emerald-500/30 bg-emerald-50">
               <span class="text-[10px] uppercase font-bold text-emerald-700 block mb-1">Owner Screen (4-Digit PIN)</span>
               <p class="text-slate-700 font-medium">Unlocks profit margins, bank balance, expenses, and staff management.</p>
+              <div class="flex gap-1.5 mt-2.5" aria-hidden="true">
+                <span class="pin-dot"></span>
+                <span class="pin-dot" style="animation-delay: .2s;"></span>
+                <span class="pin-dot" style="animation-delay: .4s;"></span>
+                <span class="pin-dot" style="animation-delay: .6s;"></span>
+              </div>
             </div>
           </div>
         </div>
-        <div class="order-1 md:order-2">
+        <div data-reveal class="order-1 md:order-2">
           <span class="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Owner Security</span>
           <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 mt-2 mb-4">
             Protect your profit margins from cashier view.
@@ -444,13 +539,13 @@
           </p>
           <ul class="text-sm text-slate-700 space-y-2">
             <li class="flex items-center gap-2.5">
-              <span class="text-emerald-500 font-bold">✓</span> Cashier profit &amp; margin hide mode
+              <span class="text-emerald-500 font-bold ck">✓</span> Cashier profit &amp; margin hide mode
             </li>
             <li class="flex items-center gap-2.5">
-              <span class="text-emerald-500 font-bold">✓</span> 4-digit PIN security with brute-force lockout
+              <span class="text-emerald-500 font-bold ck">✓</span> 4-digit PIN security with brute-force lockout
             </li>
             <li class="flex items-center gap-2.5">
-              <span class="text-emerald-500 font-bold">✓</span> Shift balancing reports at the end of each cashier shift
+              <span class="text-emerald-500 font-bold ck">✓</span> Shift balancing reports at the end of each cashier shift
             </li>
           </ul>
         </div>
@@ -466,30 +561,30 @@
   <section id="migration" class="py-20 border-t border-slate-100 bg-slate-50/60">
     <div class="max-w-4xl mx-auto px-6 text-center">
       
-      <span class="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Easy Onboarding</span>
-      <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 mt-2 mb-4">
+      <span data-reveal class="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Easy Onboarding</span>
+      <h2 data-reveal style="--d:.08s" class="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 mt-2 mb-4">
         Bring your existing records in under a minute.
       </h2>
-      <p class="text-base text-slate-600 max-w-xl mx-auto mb-12">
+      <p data-reveal style="--d:.16s" class="text-base text-slate-600 max-w-xl mx-auto mb-12">
         You don't have to re-enter your stock or customer list by hand. Drop your existing Excel or CSV files, and AMS organizes them into your catalog and opening balances automatically.
       </p>
 
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-left">
-        <div class="p-6 rounded-2xl border border-slate-200 bg-white">
+        <div data-reveal class="p-6 rounded-2xl border border-slate-200 bg-white step-wave" style="animation-delay: 0s;">
           <span class="text-sm font-bold text-slate-400">1</span>
           <h3 class="text-base font-bold text-slate-900 mt-2 mb-1">Drop your spreadsheet</h3>
           <p class="text-xs text-slate-600 leading-relaxed">
             Upload any .xlsx or .csv file. Even if your file has multiple sheets for stock, suppliers, and cash float, AMS reads them all.
           </p>
         </div>
-        <div class="p-6 rounded-2xl border border-slate-200 bg-white">
+        <div data-reveal style="--d:.1s; animation-delay: .3s;" class="p-6 rounded-2xl border border-slate-200 bg-white step-wave">
           <span class="text-sm font-bold text-slate-400">2</span>
           <h3 class="text-base font-bold text-slate-900 mt-2 mb-1">Automatic mapping</h3>
           <p class="text-xs text-slate-600 leading-relaxed">
             The importer automatically recognizes columns like Product Name, Selling Price, Cost, and Stock Quantity without manual mapping.
           </p>
         </div>
-        <div class="p-6 rounded-2xl border border-slate-200 bg-white">
+        <div data-reveal style="--d:.2s; animation-delay: .6s;" class="p-6 rounded-2xl border border-slate-200 bg-white step-wave">
           <span class="text-sm font-bold text-slate-400">3</span>
           <h3 class="text-base font-bold text-slate-900 mt-2 mb-1">Ready to sell</h3>
           <p class="text-xs text-slate-600 leading-relaxed">
@@ -509,11 +604,11 @@
     <div class="max-w-5xl mx-auto px-6">
       
       <div class="text-center mb-14">
-        <span class="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Multi-Platform</span>
-        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 mt-2 mb-3">
+        <span data-reveal class="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Multi-Platform</span>
+        <h2 data-reveal style="--d:.08s" class="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 mt-2 mb-3">
           Download AMS for your devices.
         </h2>
-        <p class="text-sm text-slate-600 max-w-xl mx-auto">
+        <p data-reveal style="--d:.16s" class="text-sm text-slate-600 max-w-xl mx-auto">
           Install the native workstation for your PC or laptop, or install the mobile app for your Android phone or shop tablet.
         </p>
       </div>
@@ -522,10 +617,10 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left mb-6">
         
         <!-- Windows -->
-        <div class="p-6 rounded-2xl border-2 border-slate-900 bg-slate-50/60 flex flex-col justify-between">
+        <div data-reveal class="p-6 rounded-2xl border-2 border-slate-900 bg-slate-50/60 flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-bold px-2 py-0.5 rounded bg-slate-900 text-white">Recommended</span>
+              <span class="badge-pulse text-xs font-bold px-2 py-0.5 rounded bg-slate-900 text-white">Recommended</span>
               <span class="text-xs text-slate-500 font-medium">v1.1.1</span>
             </div>
             <h3 class="text-lg font-bold text-slate-900 mb-1">AMS for Windows</h3>
@@ -544,7 +639,7 @@
         </div>
 
         <!-- macOS -->
-        <div class="p-6 rounded-2xl border border-slate-200 bg-white flex flex-col justify-between shadow-xs">
+        <div data-reveal style="--d:.1s" class="p-6 rounded-2xl border border-slate-200 bg-white flex flex-col justify-between shadow-xs">
           <div>
             <div class="flex items-center justify-between mb-3">
               <span class="text-xs font-medium text-slate-500">Apple Mac</span>
@@ -566,7 +661,7 @@
         </div>
 
         <!-- Android APK -->
-        <div class="p-6 rounded-2xl border border-slate-200 bg-white flex flex-col justify-between shadow-xs">
+        <div data-reveal style="--d:.2s" class="p-6 rounded-2xl border border-slate-200 bg-white flex flex-col justify-between shadow-xs">
           <div>
             <div class="flex items-center justify-between mb-3">
               <span class="text-xs font-medium text-slate-500">Android</span>
@@ -590,7 +685,7 @@
       </div>
 
       <!-- Cloud Companion Banner -->
-      <div class="p-5 rounded-2xl border border-slate-200 bg-slate-50/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div data-reveal class="p-5 rounded-2xl border border-slate-200 bg-slate-50/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h4 class="text-sm font-bold text-slate-900">AMS Cloud Web Companion</h4>
           <p class="text-xs text-slate-500">Access your business figures from Safari, Chrome, iPad, or any mobile browser without downloading anything.</p>
@@ -610,23 +705,23 @@
   <section id="pricing" class="py-20 border-t border-slate-100 bg-slate-50/60">
     <div class="max-w-3xl mx-auto px-6 text-center">
       
-      <span class="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Free Launch Access</span>
-      <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 mt-2 mb-4">
+      <span data-reveal class="text-xs font-semibold text-emerald-600 uppercase tracking-wider">Free Launch Access</span>
+      <h2 data-reveal style="--d:.08s" class="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 mt-2 mb-4">
         100% Free for all businesses until 2027.
       </h2>
-      <p class="text-base text-slate-600 leading-relaxed mb-8">
+      <p data-reveal style="--d:.16s" class="text-base text-slate-600 leading-relaxed mb-8">
         We believe small and growing businesses deserve modern tools without expensive subscriptions. Every feature in AMS is completely free to use throughout our public launch period.
       </p>
 
-      <div class="inline-flex flex-wrap items-center justify-center gap-6 text-xs text-slate-600 mb-8 font-medium">
-        <span class="flex items-center gap-1.5"><span class="text-emerald-500 font-bold">✓</span> No credit card required</span>
-        <span class="flex items-center gap-1.5"><span class="text-emerald-500 font-bold">✓</span> No monthly subscription fees</span>
-        <span class="flex items-center gap-1.5"><span class="text-emerald-500 font-bold">✓</span> Unlimited transactions</span>
-        <span class="flex items-center gap-1.5"><span class="text-emerald-500 font-bold">✓</span> Automatic updates included</span>
+      <div data-reveal style="--d:.24s" class="inline-flex flex-wrap items-center justify-center gap-6 text-xs text-slate-600 mb-8 font-medium">
+        <span class="flex items-center gap-1.5"><span class="text-emerald-500 font-bold ck">✓</span> No credit card required</span>
+        <span class="flex items-center gap-1.5"><span class="text-emerald-500 font-bold ck">✓</span> No monthly subscription fees</span>
+        <span class="flex items-center gap-1.5"><span class="text-emerald-500 font-bold ck">✓</span> Unlimited transactions</span>
+        <span class="flex items-center gap-1.5"><span class="text-emerald-500 font-bold ck">✓</span> Automatic updates included</span>
       </div>
 
-      <div>
-        <a href="#downloads" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-900 text-white text-sm font-semibold hover:bg-slate-800 transition shadow-sm">
+      <div data-reveal style="--d:.32s">
+        <a href="#downloads" class="cta-glow inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-900 text-white text-sm font-semibold hover:bg-slate-800 transition shadow-sm">
           <span>Get Free Access Now</span>
           <span>↓</span>
         </a>
@@ -666,6 +761,712 @@
 
 
   <!-- ======================================================== -->
+  <!-- HERO SCENE ANIMATION                                     -->
+  <!-- ======================================================== -->
+  <script>
+    (function () {
+      var canvas = document.getElementById('ams-hero-canvas');
+      if (!canvas) return;
+      var ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      var reduceMotion = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      var width = 0, height = 0;
+      var fov = 520;
+      var time = 1.2;
+      var rafId = null;
+      var inView = true;
+      var lastTs = null;
+
+      var mouse = { x: 0, y: 0, tx: 0, ty: 0 };
+      var previewEl = document.getElementById('app-preview');
+      var deskWorldY = 0;
+
+      function halfW(z) { return ((width / 2) * (fov + z)) / fov; }
+      function halfH(z) { return ((height / 2) * (fov + z)) / fov; }
+
+      function resize() {
+        var parent = canvas.parentElement;
+        if (!parent) return;
+        var rect = parent.getBoundingClientRect();
+        var dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+        width = Math.max(320, rect.width);
+        height = Math.max(360, rect.height);
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        deskWorldY = deskTopY() - height / 2;
+      }
+
+      resize();
+
+      function rotate3D(p, rx, ry, rz) {
+        var y1 = p.y * Math.cos(rx) - p.z * Math.sin(rx);
+        var z1 = p.y * Math.sin(rx) + p.z * Math.cos(rx);
+        var x2 = p.x * Math.cos(ry) + z1 * Math.sin(ry);
+        var z2 = -p.x * Math.sin(ry) + z1 * Math.cos(ry);
+        var x3 = x2 * Math.cos(rz) - y1 * Math.sin(rz);
+        var y3 = x2 * Math.sin(rz) + y1 * Math.cos(rz);
+        return { x: x3, y: y3, z: z2 };
+      }
+
+      function project(x, y, z, camX, camY) {
+        var scale = fov / (fov + z);
+        return {
+          x: width / 2 + (x - camX) * scale,
+          y: height / 2 + (y - camY) * scale,
+          scale: scale
+        };
+      }
+
+      function rr(x, y, w, h, r) {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.lineTo(x + w - r, y);
+        ctx.arcTo(x + w, y, x + w, y + r, r);
+        ctx.lineTo(x + w, y + h - r);
+        ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+        ctx.lineTo(x + r, y + h);
+        ctx.arcTo(x, y + h, x, y + h - r, r);
+        ctx.lineTo(x, y + r);
+        ctx.arcTo(x, y, x + r, y, r);
+        ctx.closePath();
+      }
+
+      // ---- floating calculators -------------------------------------------
+      var CALC_STYLES = [
+        { body: '#0f172a', dark: '#020617', keys: '#1e293b', screen: '#ecfdf5', digits: '#047857', accent: '#34d399', amount: 'GHS 42,500' },
+        { body: '#059669', dark: '#064e3b', keys: '#047857', screen: '#f0fdf4', digits: '#065f46', accent: '#fbbf24', amount: '+1,250.00' },
+        { body: '#4f46e5', dark: '#312e81', keys: '#4338ca', screen: '#eef2ff', digits: '#3730a3', accent: '#fbbf24', amount: 'GHS 8,420' },
+        { body: '#d97706', dark: '#92400e', keys: '#b45309', screen: '#fffbeb', digits: '#92400e', accent: '#0f172a', amount: '34,080.00' },
+        { body: '#0284c7', dark: '#075985', keys: '#0369a1', screen: '#f0f9ff', digits: '#0c4a6e', accent: '#f43f5e', amount: 'GHS 99,000' },
+        { body: '#334155', dark: '#1e293b', keys: '#475569', screen: '#f8fafc', digits: '#0f172a', accent: '#10b981', amount: '-320.50' }
+      ];
+
+      var props = [];
+
+      CALC_STYLES.forEach(function (cfg, i) {
+        var z = 240 + (i % 4) * 85;
+        props.push({
+          kind: 'calc', z: z,
+          x: (Math.random() - 0.5) * halfW(z) * 1.8,
+          y: halfH(z) * (Math.random() * 1.25 - 0.85),
+          vx: (Math.random() - 0.5) * 0.55,
+          vy: (Math.random() - 0.5) * 0.35,
+          vz: (Math.random() - 0.5) * 0.2,
+          rx: Math.random() * 6.28, ry: Math.random() * 6.28, rz: Math.random() * 6.28,
+          vrx: (Math.random() - 0.5) * 0.005, vry: (Math.random() - 0.5) * 0.007, vrz: (Math.random() - 0.5) * 0.0035,
+          W: 84, H: 112, T: 22,
+          style: cfg,
+          wobbleSpeed: 0.8 + Math.random() * 0.6,
+          wobblePhase: i * 0.9
+        });
+      });
+
+      // ---- floating papers / receipts --------------------------------------
+      var PAPERS = [
+        { title: 'INVOICE', total: 'GHS 1,240.00', tint: '#ffffff' },
+        { title: 'RECEIPT', total: 'GHS 86.50', tint: '#fffbeb' },
+        { title: 'LEDGER', total: 'GHS 12,300', tint: '#ffffff' },
+        { title: 'BALANCE', total: 'GHS 34,080', tint: '#ffffff' },
+        { title: 'STOCK LIST', total: '214 items', tint: '#f0fdf4' }
+      ];
+
+      PAPERS.forEach(function (cfg, i) {
+        var z = 230 + (i % 4) * 90;
+        props.push({
+          kind: 'paper', z: z,
+          x: (Math.random() - 0.5) * halfW(z) * 1.9,
+          y: halfH(z) * (Math.random() * 1.3 - 0.9),
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.32,
+          vz: (Math.random() - 0.5) * 0.2,
+          rx: Math.random() * 6.28, ry: Math.random() * 6.28, rz: Math.random() * 6.28,
+          vrx: (Math.random() - 0.5) * 0.004, vry: (Math.random() - 0.5) * 0.006, vrz: (Math.random() - 0.5) * 0.005,
+          W: 76, H: 100, T: 6,
+          cfg: cfg,
+          seed: i * 3.7,
+          wobbleSpeed: 0.9 + Math.random() * 0.5,
+          wobblePhase: 1.4 + i * 0.7
+        });
+      });
+
+      // ---- cedi coins drifting upward along the side margins ---------------
+      for (var c = 0; c < 10; c++) {
+        var cz = 220 + Math.random() * 360;
+        var side = c % 2 === 0 ? 1 : -1;
+        props.push({
+          kind: 'coin', z: cz,
+          x: side * (halfW(cz) * (0.52 + Math.random() * 0.42)),
+          y: (Math.random() - 0.5) * halfH(cz) * 2.2,
+          vy: -(0.3 + Math.random() * 0.45),
+          swayAmp: 6 + Math.random() * 12,
+          swaySpeed: 0.4 + Math.random() * 0.5,
+          phase: Math.random() * 6.28,
+          spin: Math.random() * 6.28,
+          spinSpeed: 0.5 + Math.random() * 1.1,
+          R: 13 + Math.random() * 6
+        });
+      }
+
+      // ---- paper airplanes gliding across ----------------------------------
+      for (var p = 0; p < 5; p++) {
+        var pz = 260 + Math.random() * 300;
+        var heading = Math.random() > 0.5 ? 1 : -1;
+        props.push({
+          kind: 'plane', z: pz,
+          x: (Math.random() - 0.5) * halfW(pz) * 2,
+          y: (Math.random() - 0.5) * halfH(pz) * 1.6,
+          vx: heading * (0.8 + Math.random() * 0.9),
+          bobAmp: 7 + Math.random() * 9,
+          bobSpeed: 0.5 + Math.random() * 0.5,
+          phase: Math.random() * 6.28,
+          bankPhase: Math.random() * 6.28,
+          S: 26 + Math.random() * 14
+        });
+      }
+
+      // ---- soft colour washes + light bands --------------------------------
+      var washes = [
+        { rgb: '209, 250, 229', r: 0.42, ox: 0.18, oy: 0.22, speed: 0.1, phase: 0 },
+        { rgb: '224, 231, 255', r: 0.4, ox: 0.84, oy: 0.3, speed: 0.085, phase: 2.1 },
+        { rgb: '254, 243, 199', r: 0.32, ox: 0.5, oy: 0.88, speed: 0.07, phase: 4.2 }
+      ];
+
+      // ---- desk scene geometry ----------------------------------------------
+      function deskTopY() {
+        var y = height * 0.8;
+        if (previewEl) {
+          var pr = previewEl.getBoundingClientRect();
+          var cr = canvas.getBoundingClientRect();
+          y = pr.top - cr.top - 16;
+        }
+        return Math.max(height * 0.52, Math.min(height - 48, y));
+      }
+
+      function drawWashes() {
+        washes.forEach(function (w) {
+          var cx = width * (w.ox + Math.sin(time * w.speed + w.phase) * 0.045);
+          var cy = height * (w.oy + Math.cos(time * w.speed + w.phase) * 0.05);
+          var rad = width * w.r;
+          var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, rad);
+          g.addColorStop(0, 'rgba(' + w.rgb + ', 0.55)');
+          g.addColorStop(1, 'rgba(' + w.rgb + ', 0)');
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 0, width, height);
+        });
+      }
+
+      function drawBands() {
+        for (var i = 0; i < 4; i++) {
+          var x0 = width * (0.12 + i * 0.25) + Math.sin(time * 0.13 + i * 1.7) * 28;
+          var drift = Math.tan(-0.1 + (i - 1.5) * 0.035) * height;
+          var g = ctx.createLinearGradient(0, 0, 0, height);
+          g.addColorStop(0, 'rgba(15, 23, 42, 0.05)');
+          g.addColorStop(0.75, 'rgba(15, 23, 42, 0.012)');
+          g.addColorStop(1, 'rgba(15, 23, 42, 0)');
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.moveTo(x0 - 30, 0);
+          ctx.lineTo(x0 + 30, 0);
+          ctx.lineTo(x0 + drift + 130, height);
+          ctx.lineTo(x0 + drift - 130, height);
+          ctx.closePath();
+          ctx.fill();
+        }
+      }
+
+      function drawBox(o, faces, detailFn) {
+        var hw = o.W / 2, hh = o.H / 2, ht = o.T / 2;
+        var corners = [
+          { x: -hw, y: -hh, z: -ht }, { x: hw, y: -hh, z: -ht },
+          { x: hw, y: hh, z: -ht }, { x: -hw, y: hh, z: -ht },
+          { x: -hw, y: -hh, z: ht }, { x: hw, y: -hh, z: ht },
+          { x: hw, y: hh, z: ht }, { x: -hw, y: hh, z: ht }
+        ];
+        var proj = corners.map(function (v) {
+          var r = rotate3D(v, o.rx, o.ry, o.rz);
+          return project(o.x + r.x, o.y + r.y, o.z + r.z, mouse.x, mouse.y);
+        });
+
+        faces.forEach(function (f) {
+          var p0 = proj[f[0]], p1 = proj[f[1]], p2 = proj[f[2]], p3 = proj[f[3]];
+          var nz = (p1.x - p0.x) * (p2.y - p0.y) - (p1.y - p0.y) * (p2.x - p0.x);
+          if (nz <= 0) return;
+          var avgScale = (p0.scale + p2.scale) / 2;
+          var fade = Math.min(1, Math.max(0.4, avgScale * 1.35));
+          ctx.beginPath();
+          ctx.moveTo(p0.x, p0.y);
+          ctx.lineTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.lineTo(p3.x, p3.y);
+          ctx.closePath();
+          ctx.globalAlpha = f[4] === 'front' ? fade : fade * 0.92;
+          ctx.fillStyle = f[5];
+          ctx.fill();
+          ctx.globalAlpha = 1;
+
+          if (f[4] === 'front' && detailFn && avgScale > 0.42) {
+            ctx.save();
+            ctx.transform(
+              (p1.x - p0.x) / o.W, (p1.y - p0.y) / o.W,
+              (p3.x - p0.x) / o.H, (p3.y - p0.y) / o.H,
+              p0.x, p0.y
+            );
+            detailFn(avgScale);
+            ctx.restore();
+          }
+        });
+      }
+
+      function calcDetail(style) {
+        return function () {
+          rr(10, 10, 64, 30, 5);
+          ctx.fillStyle = style.screen;
+          ctx.fill();
+          ctx.strokeStyle = style.dark;
+          ctx.lineWidth = 1.6;
+          ctx.stroke();
+          ctx.fillStyle = style.digits;
+          ctx.font = '600 13px Inter, monospace';
+          ctx.textAlign = 'right';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(style.amount, 68, 25.5);
+          rr(12, 46, 22, 4.5, 2);
+          ctx.fillStyle = style.accent;
+          ctx.fill();
+          for (var r = 0; r < 4; r++) {
+            for (var c = 0; c < 4; c++) {
+              rr(12 + c * 16.5, 56 + r * 13.5, 12.5, 9.5, 2.5);
+              ctx.fillStyle = (r === 3 && c === 3) ? style.accent : style.keys;
+              ctx.fill();
+            }
+          }
+        };
+      }
+
+      function paperDetail(o) {
+        return function () {
+          ctx.fillStyle = o.cfg.tint;
+          ctx.fillRect(0, 0, o.W, o.H);
+          ctx.strokeStyle = o.cfg.tint === '#fffbeb' ? '#f59e0b' : '#cbd5e1';
+          ctx.lineWidth = 1.4;
+          ctx.strokeRect(0.7, 0.7, o.W - 1.4, o.H - 1.4);
+          ctx.fillStyle = '#334155';
+          ctx.font = '700 9px Inter, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'alphabetic';
+          ctx.fillText(o.cfg.title, o.W / 2, 15);
+          ctx.strokeStyle = 'rgba(100, 116, 139, 0.75)';
+          ctx.lineWidth = 1.5;
+          for (var i = 0; i < 5; i++) {
+            var y = 27 + i * 9.5;
+            var lw = 18 + ((Math.sin(o.seed + i * 2.3) + 1) / 2) * 22;
+            ctx.beginPath();
+            ctx.moveTo(8, y);
+            ctx.lineTo(8 + lw, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(o.W - 26, y);
+            ctx.lineTo(o.W - 8, y);
+            ctx.stroke();
+          }
+          ctx.strokeStyle = '#334155';
+          ctx.lineWidth = 1.8;
+          ctx.beginPath();
+          ctx.moveTo(8, 80);
+          ctx.lineTo(o.W - 8, 80);
+          ctx.stroke();
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(8, 83);
+          ctx.lineTo(o.W - 8, 83);
+          ctx.stroke();
+          ctx.fillStyle = '#059669';
+          ctx.font = '700 9.5px Inter, sans-serif';
+          ctx.textAlign = 'right';
+          ctx.fillText(o.cfg.total, o.W - 8, 94);
+        };
+      }
+
+      function drawCalc(o) {
+        drawBox(o, [
+          [4, 5, 6, 7, 'front', o.style.body],
+          [0, 1, 2, 3, 'back', o.style.dark],
+          [0, 1, 5, 4, 'top', o.style.dark],
+          [3, 2, 6, 7, 'bottom', o.style.dark],
+          [1, 2, 6, 5, 'side', o.style.dark],
+          [0, 3, 7, 4, 'side', o.style.dark]
+        ], calcDetail(o.style));
+      }
+
+      function drawPaper(o) {
+        drawBox(o, [
+          [4, 5, 6, 7, 'front', '#ffffff'],
+          [0, 1, 2, 3, 'back', '#e2e8f0'],
+          [0, 1, 5, 4, 'top', '#eef2f6'],
+          [3, 2, 6, 7, 'bottom', '#dde5ec'],
+          [1, 2, 6, 5, 'side', '#dde5ec'],
+          [0, 3, 7, 4, 'side', '#e6ecf2']
+        ], paperDetail(o));
+      }
+
+      function drawCoin(o) {
+        var pt = project(o.x, o.y, o.z, mouse.x, mouse.y);
+        var squash = Math.abs(Math.cos(o.spin));
+        var rx = Math.max(2.5, o.R * pt.scale * squash);
+        var ry = o.R * pt.scale;
+        ctx.beginPath();
+        ctx.ellipse(pt.x, pt.y, rx, ry, 0, 0, Math.PI * 2);
+        ctx.fillStyle = '#fbbf24';
+        ctx.fill();
+        ctx.lineWidth = 1.6;
+        ctx.strokeStyle = '#b45309';
+        ctx.stroke();
+        if (squash > 0.55) {
+          ctx.beginPath();
+          ctx.ellipse(pt.x, pt.y, rx * 0.62, ry * 0.62, 0, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(180, 83, 9, 0.55)';
+          ctx.lineWidth = 1.1;
+          ctx.stroke();
+          ctx.fillStyle = '#92400e';
+          ctx.font = '700 ' + Math.round(ry * 1.05) + 'px Inter, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('\u00A2', pt.x, pt.y + 0.5);
+        }
+      }
+
+      function drawPlane(o) {
+        var bob = Math.sin(time * o.bobSpeed + o.phase) * o.bobAmp;
+        var pt = project(o.x, o.y + bob, o.z, mouse.x, mouse.y);
+        var bank = Math.sin(time * 0.6 + o.bankPhase) * 0.16;
+        var s = pt.scale;
+        ctx.save();
+        ctx.translate(pt.x, pt.y);
+        ctx.rotate(bank);
+        ctx.scale(o.vx > 0 ? s : -s, s);
+        var S = o.S;
+        ctx.beginPath();
+        ctx.moveTo(S, 0);
+        ctx.lineTo(-S * 0.9, -S * 0.36);
+        ctx.lineTo(-S * 0.45, 0);
+        ctx.closePath();
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+        ctx.lineWidth = 1.2;
+        ctx.strokeStyle = '#94a3b8';
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(S, 0);
+        ctx.lineTo(-S * 0.45, 0);
+        ctx.lineTo(-S * 0.62, S * 0.3);
+        ctx.closePath();
+        ctx.fillStyle = '#f1f5f9';
+        ctx.fill();
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(S, 0);
+        ctx.lineTo(-S * 0.45, 0);
+        ctx.strokeStyle = 'rgba(16, 185, 129, 0.75)';
+        ctx.lineWidth = 1.1;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      function drawDesk() {
+        var dy = deskTopY();
+        var dw = Math.min(width * 0.94, 1200);
+        var dx = (width - dw) / 2;
+        var fit = Math.max(0.55, Math.min(1, dw / 840));
+
+        // floor shadow
+        ctx.beginPath();
+        ctx.ellipse(width / 2, dy + 34 * fit, dw * 0.52, 10 * fit, 0, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.06)';
+        ctx.fill();
+
+        // chair back
+        var ax = dx + dw * 0.5;
+        ctx.beginPath();
+        ctx.ellipse(ax, dy - 58 * fit, 34 * fit, 40 * fit, 0, Math.PI, 0);
+        ctx.fillStyle = '#dbe3ec';
+        ctx.fill();
+
+        // accountant silhouette (head + shoulders, behind desk)
+        ctx.fillStyle = '#1e293b';
+        ctx.beginPath();
+        ctx.arc(ax, dy - 74 * fit, 15 * fit, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(ax - 30 * fit, dy + 2);
+        ctx.quadraticCurveTo(ax - 28 * fit, dy - 46 * fit, ax, dy - 50 * fit);
+        ctx.quadraticCurveTo(ax + 28 * fit, dy - 46 * fit, ax + 30 * fit, dy + 2);
+        ctx.closePath();
+        ctx.fill();
+
+        // desk slab
+        rr(dx, dy, dw, 13 * fit, 4);
+        ctx.fillStyle = '#dbe3ec';
+        ctx.fill();
+        ctx.strokeStyle = '#7c8ba1';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        var legG = ctx.createLinearGradient(0, dy + 13 * fit, 0, dy + 40 * fit);
+        legG.addColorStop(0, 'rgba(203, 213, 225, 0.55)');
+        legG.addColorStop(1, 'rgba(203, 213, 225, 0)');
+        ctx.fillStyle = legG;
+        ctx.fillRect(dx + 4, dy + 13 * fit, dw - 8, 27 * fit);
+
+        // paper being written on
+        var px = ax + 24 * fit;
+        ctx.save();
+        ctx.translate(px, dy - 2);
+        ctx.rotate(-0.06);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(-16 * fit, -12 * fit, 32 * fit, 22 * fit);
+        ctx.strokeStyle = '#cbd5e1';
+        ctx.lineWidth = 0.8;
+        ctx.strokeRect(-16 * fit, -12 * fit, 32 * fit, 22 * fit);
+        ctx.strokeStyle = 'rgba(100, 116, 139, 0.6)';
+        for (var l = 0; l < 3; l++) {
+          ctx.beginPath();
+          ctx.moveTo(-11 * fit, -6 * fit + l * 6 * fit);
+          ctx.lineTo(11 * fit, -6 * fit + l * 6 * fit);
+          ctx.stroke();
+        }
+        ctx.restore();
+
+        // writing arm + pen (animated bob)
+        var bob = Math.sin(time * 2.6) * 0.045;
+        var shx = ax + 20 * fit, shy = dy - 38 * fit;
+        var hx = ax + 50 * fit, hy = dy - 10 * fit;
+        ctx.save();
+        ctx.translate(shx, shy);
+        ctx.rotate(bob);
+        ctx.strokeStyle = '#1e293b';
+        ctx.lineWidth = 9 * fit;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(hx - shx, hy - shy);
+        ctx.stroke();
+        ctx.fillStyle = '#1e293b';
+        ctx.beginPath();
+        ctx.arc(hx - shx, hy - shy, 4.5 * fit, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2.4 * fit;
+        ctx.beginPath();
+        ctx.moveTo(hx - shx + 4 * fit, hy - shy - 4 * fit);
+        ctx.lineTo(hx - shx + 12 * fit, hy - shy - 10 * fit);
+        ctx.stroke();
+        ctx.restore();
+
+        // desk lamp (far right margin) with warm glow toward the centre
+        var lx = dx + dw * 0.955;
+        ctx.strokeStyle = '#334155';
+        ctx.lineWidth = 3.4 * fit;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(lx, dy - 2);
+        ctx.lineTo(lx + 6 * fit, dy - 40 * fit);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(lx + 6 * fit, dy - 40 * fit);
+        ctx.lineTo(lx + 30 * fit, dy - 30 * fit);
+        ctx.stroke();
+        ctx.save();
+        ctx.translate(lx + 30 * fit, dy - 30 * fit);
+        ctx.rotate(-2.5);
+        rr(-9 * fit, -6 * fit, 18 * fit, 11 * fit, 4);
+        ctx.fillStyle = '#334155';
+        ctx.fill();
+        ctx.restore();
+        var glow = ctx.createRadialGradient(lx + 34 * fit, dy - 20 * fit, 2, lx + 34 * fit, dy - 20 * fit, 60 * fit);
+        glow.addColorStop(0, 'rgba(251, 191, 36, 0.22)');
+        glow.addColorStop(1, 'rgba(251, 191, 36, 0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(lx + 34 * fit, dy - 20 * fit, 60 * fit, 0, Math.PI * 2);
+        ctx.fill();
+
+        // coffee mug with steam (left margin)
+        var mx = dx + dw * 0.055;
+        rr(mx - 8 * fit, dy - 15 * fit, 16 * fit, 15 * fit, 3);
+        ctx.fillStyle = '#475569';
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(mx + 10 * fit, dy - 8 * fit, 4.5 * fit, -0.5 * Math.PI, 0.5 * Math.PI);
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 2.4 * fit;
+        ctx.stroke();
+        for (var s2 = 0; s2 < 2; s2++) {
+          var sway = Math.sin(time * 1.3 + s2 * 2.1) * 4 * fit;
+          var sx = mx + (s2 === 0 ? -2 : 3) * fit;
+          ctx.beginPath();
+          ctx.moveTo(sx, dy - 17 * fit);
+          ctx.quadraticCurveTo(sx + sway, dy - 25 * fit, sx + sway * 0.4, dy - 32 * fit);
+          ctx.strokeStyle = 'rgba(100, 116, 139, ' + (0.32 - s2 * 0.12) + ')';
+          ctx.lineWidth = 1.4;
+          ctx.stroke();
+        }
+
+        // paper stack (left margin)
+        var tx = dx + dw * 0.025;
+        for (var t = 2; t >= 0; t--) {
+          ctx.save();
+          ctx.translate(tx, dy - 3 - t * 4.5 * fit);
+          ctx.rotate((t - 1) * 0.05);
+          ctx.fillStyle = t === 2 ? '#ffffff' : '#f1f5f9';
+          ctx.fillRect(-17 * fit, -4 * fit, 34 * fit, 7 * fit);
+          ctx.strokeStyle = '#cbd5e1';
+          ctx.lineWidth = 0.8;
+          ctx.strokeRect(-17 * fit, -4 * fit, 34 * fit, 7 * fit);
+          ctx.restore();
+        }
+
+        // small plant (right margin, beside the lamp)
+        var vx = dx + dw * 0.985;
+        var swayP = Math.sin(time * 0.9) * 0.06;
+        for (var lf = -2; lf <= 2; lf++) {
+          ctx.save();
+          ctx.translate(vx, dy - 12 * fit);
+          ctx.rotate(lf * 0.42 + swayP);
+          ctx.beginPath();
+          ctx.ellipse(0, -13 * fit, 4.2 * fit, 14 * fit, 0, 0, Math.PI * 2);
+          ctx.fillStyle = lf % 2 === 0 ? '#059669' : '#10b981';
+          ctx.fill();
+          ctx.restore();
+        }
+        ctx.beginPath();
+        ctx.moveTo(vx - 9 * fit, dy - 12 * fit);
+        ctx.lineTo(vx + 9 * fit, dy - 12 * fit);
+        ctx.lineTo(vx + 6 * fit, dy - 1);
+        ctx.lineTo(vx - 6 * fit, dy - 1);
+        ctx.closePath();
+        ctx.fillStyle = '#92400e';
+        ctx.fill();
+      }
+
+      function updateProps() {
+        var propFloor = deskWorldY - 10;
+        props.forEach(function (o) {
+          if (o.kind === 'coin') {
+            o.y += o.vy;
+            o.x += Math.sin(time * o.swaySpeed + o.phase) * 0.3;
+            o.spin += o.spinSpeed * 0.016;
+            if (o.y < -halfH(o.z) * 1.2 || o.y > propFloor) {
+              o.y = Math.min(propFloor - 8, halfH(o.z) * 1.2);
+              o.x = (Math.sign(o.x) || 1) * halfW(o.z) * (0.52 + Math.random() * 0.42);
+              o.vy = -(0.3 + Math.random() * 0.45);
+            }
+          } else if (o.kind === 'plane') {
+            o.x += o.vx;
+            var hw2 = halfW(o.z) * 1.25;
+            if (Math.abs(o.x) > hw2) {
+              o.x = -Math.sign(o.x) * hw2;
+              o.y = (Math.random() - 0.5) * halfH(o.z);
+              o.z = 260 + Math.random() * 300;
+            }
+            if (o.y > propFloor - 18) o.y = propFloor - 18;
+          } else {
+            o.x += o.vx + Math.sin(time * o.wobbleSpeed + o.wobblePhase) * 0.32;
+            o.y += o.vy + Math.cos(time * o.wobbleSpeed * 0.85 + o.wobblePhase) * 0.26;
+            o.z += o.vz;
+            o.rx += o.vrx; o.ry += o.vry; o.rz += o.vrz;
+
+            var hw3 = halfW(o.z) * 1.1;
+            var hh3 = halfH(o.z) * 1.05;
+            if (o.x > hw3) { o.x = hw3; o.vx = -Math.abs(o.vx); }
+            if (o.x < -hw3) { o.x = -hw3; o.vx = Math.abs(o.vx); }
+            if (o.y > propFloor) { o.y = propFloor; o.vy = -Math.abs(o.vy); }
+            if (o.y < -hh3) { o.y = -hh3; o.vy = Math.abs(o.vy); }
+            if (o.z > 620) { o.z = 620; o.vz = -Math.abs(o.vz); }
+            if (o.z < 210) { o.z = 210; o.vz = Math.abs(o.vz); }
+          }
+        });
+      }
+
+      function render() {
+        ctx.clearRect(0, 0, width, height);
+        drawWashes();
+        drawBands();
+        props
+          .slice()
+          .sort(function (a, b) { return b.z - a.z; })
+          .forEach(function (o) {
+            if (o.kind === 'calc') drawCalc(o);
+            else if (o.kind === 'paper') drawPaper(o);
+            else if (o.kind === 'coin') drawCoin(o);
+            else drawPlane(o);
+          });
+        drawDesk();
+      }
+
+      function loop(ts) {
+        if (lastTs === null) lastTs = ts;
+        var dt = Math.min(0.05, (ts - lastTs) / 1000);
+        lastTs = ts;
+        time += dt;
+        mouse.x += (mouse.tx - mouse.x) * 0.06;
+        mouse.y += (mouse.ty - mouse.y) * 0.06;
+        updateProps();
+        render();
+        rafId = requestAnimationFrame(loop);
+      }
+
+      function setRunning() {
+        var should = inView && !document.hidden && !reduceMotion;
+        if (should && rafId === null) {
+          lastTs = null;
+          rafId = requestAnimationFrame(loop);
+        } else if (!should && rafId !== null) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+      }
+
+      resize();
+      updateProps();
+      render();
+      window.__amsHeroResize = resize;
+
+      if (reduceMotion) return;
+
+      if ('ResizeObserver' in window) {
+        new ResizeObserver(function () { resize(); }).observe(canvas.parentElement);
+      } else {
+        window.addEventListener('resize', resize);
+      }
+
+      window.addEventListener('mousemove', function (e) {
+        mouse.tx = ((e.clientX / window.innerWidth) * 2 - 1) * 55;
+        mouse.ty = ((e.clientY / window.innerHeight) * 2 - 1) * 38;
+      }, { passive: true });
+
+      window.addEventListener('touchmove', function (e) {
+        if (e.touches.length > 0) {
+          mouse.tx = ((e.touches[0].clientX / window.innerWidth) * 2 - 1) * 55;
+          mouse.ty = ((e.touches[0].clientY / window.innerHeight) * 2 - 1) * 38;
+        }
+      }, { passive: true });
+
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+          inView = entries[0].isIntersecting;
+          setRunning();
+        }, { threshold: 0 }).observe(canvas);
+      }
+
+      document.addEventListener('visibilitychange', setRunning);
+      setRunning();
+    })();
+  </script>
+
+  <!-- ======================================================== -->
   <!-- MOBILE MENU JAVASCRIPT                                   -->
   <!-- ======================================================== -->
   <script>
@@ -683,6 +1484,72 @@
         });
       });
     }
+  </script>
+
+  <!-- ======================================================== -->
+  <!-- SCROLL REVEAL + COUNT-UP                                 -->
+  <!-- ======================================================== -->
+  <script>
+    (function () {
+      document.documentElement.classList.add('js');
+
+      var reduce = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      var els = Array.prototype.slice.call(
+        document.querySelectorAll('[data-reveal], [data-countup]')
+      );
+
+      function countUp(el) {
+        var target = parseFloat(el.getAttribute('data-countup'));
+        var prefix = el.getAttribute('data-prefix') || '';
+        var dec = parseInt(el.getAttribute('data-decimals') || '0', 10);
+        var t0 = null;
+        var dur = 1400;
+        function fmt(v) {
+          return prefix + v.toLocaleString('en-US', {
+            minimumFractionDigits: dec, maximumFractionDigits: dec
+          });
+        }
+        if (reduce) { el.textContent = fmt(target); return; }
+        function step(ts) {
+          if (t0 === null) t0 = ts;
+          var p = Math.min((ts - t0) / dur, 1);
+          var eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = fmt(target * eased);
+          if (p < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+
+      if (reduce || !('IntersectionObserver' in window)) {
+        els.forEach(function (el) {
+          el.classList.add('rv-in');
+          if (el.hasAttribute('data-countup')) countUp(el);
+        });
+        return;
+      }
+
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var el = entry.target;
+          io.unobserve(el);
+          el.classList.add('rv-in');
+          if (el.hasAttribute('data-countup')) countUp(el);
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+      els.forEach(function (el) { io.observe(el); });
+
+      // re-anchor the hero desk once the preview card finishes sliding in
+      var preview = document.getElementById('app-preview');
+      if (preview) {
+        setTimeout(function () {
+          if (typeof window.__amsHeroResize === 'function') window.__amsHeroResize();
+        }, 850);
+      }
+    })();
   </script>
 
 </body>
